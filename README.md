@@ -25,8 +25,8 @@ Một ứng dụng web hiện đại được xây dựng với Next.js để tr
 ### 1. Clone repository
 
 ```bash
-git clone https://github.com/your-username/real-estate-chat.git
-cd real-estate-chat
+git clone https://github.com/ducminh0302/real_estate.git
+cd real_estate
 ```
 
 ### 2. Cài đặt dependencies
@@ -122,7 +122,7 @@ public/
 
 ### Vercel (Khuyến nghị)
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/your-username/real-estate-chat)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/ducminh0302/real_estate)
 
 1. Push code lên GitHub repository
 2. Kết nối repository với Vercel
@@ -173,8 +173,8 @@ Distributed under the MIT License. See `LICENSE` for more information.
 ## 📞 Liên hệ
 
 - Email: [your-email@example.com](mailto:your-email@example.com)
-- Project Link: [https://github.com/your-username/real-estate-chat](https://github.com/your-username/real-estate-chat)
-- Live Demo: [https://real-estate-chat.vercel.app](https://real-estate-chat.vercel.app)
+- Project Link: [https://github.com/ducminh0302/real_estate](https://github.com/ducminh0302/real_estate)
+- Live Demo: [https://real-estate-ducminh0302.vercel.app](https://real-estate-ducminh0302.vercel.app)
 
 ## 🙏 Acknowledgements
 
