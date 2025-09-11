@@ -1,0 +1,469 @@
+{
+  "project_info": {
+    "name": "Vincity Ocean Park",
+    "developer": "VinGroup",
+    "location": "Gia Lâm, Hà Nội"
+  },
+  "zones": {
+    "The Origami": {
+      "zone_name": "The Origami",
+      "description": "Phân khu cao cấp với thiết kế hiện đại",
+      "buildings": {
+        "S6.01": {
+          "building_name": "S6.01",
+          "floors": 32,
+          "apartments": {
+            "101": {
+              "apartment_number": "101",
+              "floor": 1,
+              "area": 68.5,
+              "bedrooms": 2,
+              "bathrooms": 2,
+              "price": 2850000000,
+              "price_per_m2": 41600000,
+              "status": "available",
+              "direction": "Đông Nam"
+            },
+            "102": {
+              "apartment_number": "102", 
+              "floor": 1,
+              "area": 72.3,
+              "bedrooms": 2,
+              "bathrooms": 2,
+              "price": 3100000000,
+              "price_per_m2": 42900000,
+              "status": "sold",
+              "direction": "Tây Nam"
+            },
+            "103": {
+              "apartment_number": "103",
+              "floor": 1,
+              "area": 85.2,
+              "bedrooms": 3,
+              "bathrooms": 2,
+              "price": 3650000000,
+              "price_per_m2": 42800000,
+              "status": "reserved",
+              "direction": "Nam"
+            },
+            "201": {
+              "apartment_number": "201",
+              "floor": 2,
+              "area": 68.5,
+              "bedrooms": 2,
+              "bathrooms": 2,
+              "price": 2900000000,
+              "price_per_m2": 42300000,
+              "status": "available",
+              "direction": "Đông Nam"
+            },
+            "202": {
+              "apartment_number": "202",
+              "floor": 2,
+              "area": 72.3,
+              "bedrooms": 2,
+              "bathrooms": 2,
+              "price": 3150000000,
+              "price_per_m2": 43600000,
+              "status": "sold",
+              "direction": "Tây Nam"
+            },
+            "301": {
+              "apartment_number": "301",
+              "floor": 3,
+              "area": 68.5,
+              "bedrooms": 2,
+              "bathrooms": 2,
+              "price": 2950000000,
+              "price_per_m2": 43100000,
+              "status": "reserved",
+              "direction": "Đông Nam"
+            }
+          }
+        },
+        "S6.02": {
+          "building_name": "S6.02",
+          "floors": 30,
+          "apartments": {
+            "101": {
+              "apartment_number": "101",
+              "floor": 1,
+              "area": 65.8,
+              "bedrooms": 2,
+              "bathrooms": 2,
+              "price": 2750000000,
+              "price_per_m2": 41800000,
+              "status": "available",
+              "direction": "Đông"
+            },
+            "102": {
+              "apartment_number": "102",
+              "floor": 1,
+              "area": 78.4,
+              "bedrooms": 3,
+              "bathrooms": 2,
+              "price": 3400000000,
+              "price_per_m2": 43400000,
+              "status": "sold",
+              "direction": "Tây"
+            },
+            "103": {
+              "apartment_number": "103",
+              "floor": 1,
+              "area": 82.1,
+              "bedrooms": 3,
+              "bathrooms": 2,
+              "price": 3550000000,
+              "price_per_m2": 43200000,
+              "status": "available",
+              "direction": "Nam"
+            },
+            "201": {
+              "apartment_number": "201",
+              "floor": 2,
+              "area": 65.8,
+              "bedrooms": 2,
+              "bathrooms": 2,
+              "price": 2800000000,
+              "price_per_m2": 42500000,
+              "status": "reserved",
+              "direction": "Đông"
+            },
+            "202": {
+              "apartment_number": "202",
+              "floor": 2,
+              "area": 78.4,
+              "bedrooms": 3,
+              "bathrooms": 2,
+              "price": 3450000000,
+              "price_per_m2": 44000000,
+              "status": "sold",
+              "direction": "Tây"
+            }
+          }
+        },
+        "S6.03": {
+          "building_name": "S6.03",
+          "floors": 28,
+          "apartments": {
+            "101": {
+              "apartment_number": "101",
+              "floor": 1,
+              "area": 70.2,
+              "bedrooms": 2,
+              "bathrooms": 2,
+              "price": 2950000000,
+              "price_per_m2": 42000000,
+              "status": "available",
+              "direction": "Đông Nam"
+            },
+            "102": {
+              "apartment_number": "102",
+              "floor": 1,
+              "area": 75.8,
+              "bedrooms": 2,
+              "bathrooms": 2,
+              "price": 3200000000,
+              "price_per_m2": 42200000,
+              "status": "sold",
+              "direction": "Tây Nam"
+            },
+            "103": {
+              "apartment_number": "103",
+              "floor": 1,
+              "area": 88.5,
+              "bedrooms": 3,
+              "bathrooms": 2,
+              "price": 3800000000,
+              "price_per_m2": 42900000,
+              "status": "reserved",
+              "direction": "Nam"
+            },
+            "201": {
+              "apartment_number": "201",
+              "floor": 2,
+              "area": 70.2,
+              "bedrooms": 2,
+              "bathrooms": 2,
+              "price": 3000000000,
+              "price_per_m2": 42700000,
+              "status": "available",
+              "direction": "Đông Nam"
+            },
+            "202": {
+              "apartment_number": "202",
+              "floor": 2,
+              "area": 75.8,
+              "bedrooms": 2,
+              "bathrooms": 2,
+              "price": 3250000000,
+              "price_per_m2": 42900000,
+              "status": "sold",
+              "direction": "Tây Nam"
+            },
+            "301": {
+              "apartment_number": "301",
+              "floor": 3,
+              "area": 88.5,
+              "bedrooms": 3,
+              "bathrooms": 2,
+              "price": 3850000000,
+              "price_per_m2": 43500000,
+              "status": "available",
+              "direction": "Nam"
+            }
+          }
+        },
+        "S6.05": {
+          "building_name": "S6.05",
+          "floors": 29,
+          "apartments": {
+            "101": {
+              "apartment_number": "101",
+              "floor": 1,
+              "area": 66.9,
+              "bedrooms": 2,
+              "bathrooms": 2,
+              "price": 2800000000,
+              "price_per_m2": 41800000,
+              "status": "sold",
+              "direction": "Đông"
+            },
+            "102": {
+              "apartment_number": "102",
+              "floor": 1,
+              "area": 73.6,
+              "bedrooms": 2,
+              "bathrooms": 2,
+              "price": 3150000000,
+              "price_per_m2": 42800000,
+              "status": "available",
+              "direction": "Tây"
+            },
+            "103": {
+              "apartment_number": "103",
+              "floor": 1,
+              "area": 80.4,
+              "bedrooms": 3,
+              "bathrooms": 2,
+              "price": 3450000000,
+              "price_per_m2": 42900000,
+              "status": "reserved",
+              "direction": "Nam"
+            },
+            "201": {
+              "apartment_number": "201",
+              "floor": 2,
+              "area": 66.9,
+              "bedrooms": 2,
+              "bathrooms": 2,
+              "price": 2850000000,
+              "price_per_m2": 42600000,
+              "status": "available",
+              "direction": "Đông"
+            },
+            "202": {
+              "apartment_number": "202",
+              "floor": 2,
+              "area": 73.6,
+              "bedrooms": 2,
+              "bathrooms": 2,
+              "price": 3200000000,
+              "price_per_m2": 43500000,
+              "status": "sold",
+              "direction": "Tây"
+            },
+            "301": {
+              "apartment_number": "301",
+              "floor": 3,
+              "area": 80.4,
+              "bedrooms": 3,
+              "bathrooms": 2,
+              "price": 3500000000,
+              "price_per_m2": 43500000,
+              "status": "available",
+              "direction": "Nam"
+            }
+          }
+        },
+        "S6.06": {
+          "building_name": "S6.06",
+          "floors": 31,
+          "apartments": {
+            "101": {
+              "apartment_number": "101",
+              "floor": 1,
+              "area": 69.3,
+              "bedrooms": 2,
+              "bathrooms": 2,
+              "price": 2900000000,
+              "price_per_m2": 41800000,
+              "status": "available",
+              "direction": "Đông Nam"
+            },
+            "102": {
+              "apartment_number": "102",
+              "floor": 1,
+              "area": 74.8,
+              "bedrooms": 2,
+              "bathrooms": 2,
+              "price": 3200000000,
+              "price_per_m2": 42800000,
+              "status": "sold",
+              "direction": "Tây Nam"
+            },
+            "103": {
+              "apartment_number": "103",
+              "floor": 1,
+              "area": 86.7,
+              "bedrooms": 3,
+              "bathrooms": 2,
+              "price": 3700000000,
+              "price_per_m2": 42700000,
+              "status": "reserved",
+              "direction": "Nam"
+            },
+            "201": {
+              "apartment_number": "201",
+              "floor": 2,
+              "area": 69.3,
+              "bedrooms": 2,
+              "bathrooms": 2,
+              "price": 2950000000,
+              "price_per_m2": 42600000,
+              "status": "available",
+              "direction": "Đông Nam"
+            },
+            "202": {
+              "apartment_number": "202",
+              "floor": 2,
+              "area": 74.8,
+              "bedrooms": 2,
+              "bathrooms": 2,
+              "price": 3250000000,
+              "price_per_m2": 43400000,
+              "status": "sold",
+              "direction": "Tây Nam"
+            },
+            "301": {
+              "apartment_number": "301",
+              "floor": 3,
+              "area": 86.7,
+              "bedrooms": 3,
+              "bathrooms": 2,
+              "price": 3750000000,
+              "price_per_m2": 43200000,
+              "status": "available",
+              "direction": "Nam"
+            }
+          }
+        },
+        "S7.01": {
+          "building_name": "S7.01",
+          "floors": 30,
+          "apartments": {
+            "101": {
+              "apartment_number": "101",
+              "floor": 1,
+              "area": 67.4,
+              "bedrooms": 2,
+              "bathrooms": 2,
+              "price": 2850000000,
+              "price_per_m2": 42300000,
+              "status": "reserved",
+              "direction": "Đông"
+            },
+            "102": {
+              "apartment_number": "102",
+              "floor": 1,
+              "area": 76.2,
+              "bedrooms": 2,
+              "bathrooms": 2,
+              "price": 3300000000,
+              "price_per_m2": 43300000,
+              "status": "available",
+              "direction": "Tây"
+            },
+            "103": {
+              "apartment_number": "103",
+              "floor": 1,
+              "area": 83.9,
+              "bedrooms": 3,
+              "bathrooms": 2,
+              "price": 3600000000,
+              "price_per_m2": 42900000,
+              "status": "sold",
+              "direction": "Nam"
+            },
+            "201": {
+              "apartment_number": "201",
+              "floor": 2,
+              "area": 67.4,
+              "bedrooms": 2,
+              "bathrooms": 2,
+              "price": 2900000000,
+              "price_per_m2": 43000000,
+              "status": "available",
+              "direction": "Đông"
+            },
+            "202": {
+              "apartment_number": "202",
+              "floor": 2,
+              "area": 76.2,
+              "bedrooms": 2,
+              "bathrooms": 2,
+              "price": 3350000000,
+              "price_per_m2": 44000000,
+              "status": "reserved",
+              "direction": "Tây"
+            },
+            "301": {
+              "apartment_number": "301",
+              "floor": 3,
+              "area": 83.9,
+              "bedrooms": 3,
+              "bathrooms": 2,
+              "price": 3650000000,
+              "price_per_m2": 43500000,
+              "status": "available",
+              "direction": "Nam"
+            }
+          }
+        }
+      }
+    }
+  },
+  "status_definitions": {
+    "available": {
+      "label": "Còn trống",
+      "description": "Căn hộ đang có sẵn để bán",
+      "color": "#10B981"
+    },
+    "reserved": {
+      "label": "Đã đặt cọc",
+      "description": "Căn hộ đã được đặt cọc nhưng chưa hoàn tất thủ tục",
+      "color": "#F59E0B"
+    },
+    "sold": {
+      "label": "Đã bán",
+      "description": "Căn hộ đã được bán và hoàn tất thủ tục",
+      "color": "#EF4444"
+    }
+  },
+  "metadata": {
+    "total_buildings": 6,
+    "total_apartments": 36,
+    "available_count": 13,
+    "reserved_count": 8,
+    "sold_count": 15,
+    "price_range": {
+      "min": 2750000000,
+      "max": 3850000000
+    },
+    "area_range": {
+      "min": 65.8,
+      "max": 88.5
+    },
+    "last_updated": "2025-09-12"
+  }
+}
