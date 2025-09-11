@@ -9,7 +9,7 @@ import { ProcessedLocation } from '@/types';
 export default function ProjectMapTab() {
   const [selectedLocation, setSelectedLocation] = useState<ProcessedLocation | undefined>();
   const [isSearchPanelOpen, setIsSearchPanelOpen] = useState(true);
-  const mapRef = useRef<any>(null);
+  const mapRef = useRef<{ autoZoomOnSearchClose: () => void } | null>(null);
 
   // Loại bỏ useEffect tính toán chiều cao, sử dụng chiều cao từ parent
 

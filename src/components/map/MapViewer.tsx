@@ -26,7 +26,11 @@ interface ViewState {
 
 const MAP_DIMENSIONS = { width: 10567, height: 9495 }; // From map_normalized.json
 
-const MapViewer = forwardRef<any, MapViewerProps>(({ 
+interface MapViewerRef {
+  autoZoomOnSearchClose: () => void;
+}
+
+const MapViewer = forwardRef<MapViewerRef, MapViewerProps>(({ 
   selectedLocation, 
   highlightedLocations = [], 
   onLocationClick,

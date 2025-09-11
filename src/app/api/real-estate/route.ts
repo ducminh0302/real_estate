@@ -27,14 +27,14 @@ export async function GET(request: NextRequest) {
     let result = finalLabels;
     
     if (type) {
-      result = finalLabels.filter((item: any) => {
+      result = finalLabels.filter((item: Record<string, unknown>) => {
         switch (type) {
           case 'districts':
-            return item.text && item.text.includes('Phân khu');
+            return item.text && typeof item.text === 'string' && item.text.includes('Phân khu');
           case 'buildings':
-            return item.text && (item.text.includes('Tòa') || item.text.match(/^[A-Z]\d+/));
+            return item.text && typeof item.text === 'string' && (item.text.includes('Tòa') || item.text.match(/^[A-Z]\d+/));
           case 'apartments':
-            return item.text && item.text.match(/\d+\.\d+/);
+            return item.text && typeof item.text === 'string' && item.text.match(/\d+\.\d+/);
           default:
             return true;
         }
@@ -42,8 +42,8 @@ export async function GET(request: NextRequest) {
     }
 
     if (search) {
-      result = result.filter((item: any) => 
-        item.text && item.text.toLowerCase().includes(search.toLowerCase())
+      result = result.filter((item: Record<string, unknown>) => 
+        item.text && typeof item.text === 'string' && item.text.toLowerCase().includes(search.toLowerCase())
       );
     }
 

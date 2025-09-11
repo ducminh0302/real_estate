@@ -18,7 +18,7 @@ async function apiCall<T>(
   endpoint: string, 
   options: {
     method?: 'GET' | 'POST' | 'PUT' | 'DELETE';
-    body?: any;
+    body?: unknown;
     headers?: Record<string, string>;
     timeout?: number;
   } = {}
@@ -67,18 +67,18 @@ export interface ChatMessage {
   sender: 'user' | 'assistant';
   timestamp: Date;
   context?: {
-    selectedItems?: any[];
+    selectedItems?: unknown[];
     currentTab?: string;
-    mapSelection?: any;
+    mapSelection?: unknown;
   };
 }
 
 export interface ChatRequest {
   message: string;
   context?: {
-    selectedItems?: any[];
+    selectedItems?: unknown[];
     currentTab?: string;
-    mapSelection?: any;
+    mapSelection?: unknown;
   };
   customHeaders?: Record<string, string>;
 }
@@ -86,7 +86,7 @@ export interface ChatRequest {
 export interface ChatResponse {
   message: string;
   timestamp: string;
-  data?: any;
+  data?: unknown;
 }
 
 export const chatAPI = {
@@ -107,7 +107,7 @@ export interface RealEstateQuery {
 }
 
 export interface RealEstateData {
-  data: any[];
+  data: unknown[];
   total: number;
   type?: string;
   search?: string;
@@ -125,7 +125,7 @@ export const realEstateAPI = {
   },
 
   // Gửi context bất động sản
-  sendContext: async (context: any, customHeaders?: Record<string, string>): Promise<any> => {
+  sendContext: async (context: unknown, customHeaders?: Record<string, string>): Promise<unknown> => {
     return apiCall('/api/real-estate', {
       method: 'POST',
       body: context,
@@ -139,7 +139,7 @@ export class APIError extends Error {
   constructor(
     message: string,
     public status?: number,
-    public response?: any
+    public response?: unknown
   ) {
     super(message);
     this.name = 'APIError';

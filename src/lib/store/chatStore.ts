@@ -14,7 +14,7 @@ interface ChatState {
   setTyping: (typing: string) => void;
   clearMessages: () => void;
   updateLastMessage: (updates: Partial<ChatMessage>) => void;
-  sendMessage: (content: string, context?: any, customHeaders?: Record<string, string>) => Promise<void>;
+  sendMessage: (content: string, context?: unknown, customHeaders?: Record<string, string>) => Promise<void>;
   setError: (error: string | null) => void;
 }
 
@@ -69,7 +69,7 @@ export const useChatStore = create<ChatState>((set, get) => ({
     set({ error });
   },
 
-  sendMessage: async (content: string, context?: any, customHeaders?: Record<string, string>) => {
+  sendMessage: async (content: string, context?: unknown, customHeaders?: Record<string, string>) => {
     const { addMessage, setLoading, setError } = get();
     
     try {
@@ -86,7 +86,7 @@ export const useChatStore = create<ChatState>((set, get) => ({
       // Chuẩn bị request
       const request: ChatRequest = {
         message: content,
-        context,
+        context: context as ChatRequest['context'],
         customHeaders,
       };
 

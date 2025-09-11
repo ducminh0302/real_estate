@@ -37,7 +37,7 @@ export default function Header() {
             return (
               <button
                 key={tab.id}
-                onClick={() => setActiveTab(tab.id as any)}
+                onClick={() => setActiveTab(tab.id as 'sheet-info' | 'project-map' | 'floor-plans')}
                 className={`flex items-center gap-2 px-4 py-2 text-sm font-medium border-b-2 transition-colors
                   ${activeTab === tab.id 
                     ? 'text-primary-600 border-primary-600' 

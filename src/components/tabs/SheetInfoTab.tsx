@@ -84,7 +84,7 @@ export default function SheetInfoTab() {
 
         // Flatten dữ liệu thành mảng apartments
         const apartmentsList: Apartment[] = [];
-        const buildings: any[] = [];
+        const buildings: Array<{ building_name: string; floors: number; apartments: Record<string, unknown> }> = [];
         const statusCounts: { [key: string]: number } = { available: 0, reserved: 0, sold: 0 };
         let maxFloors = 0;
 
