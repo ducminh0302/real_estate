@@ -1,17 +1,17 @@
 # Real Estate Chat Interface
 
-Một ứng dụng web hiện đại được xây dựng với Next.js để tra cứu thông tin bất động sản qua chat interface với khả năng xem bản đồ tương tác và thông tin chi tiết các căn hộ.
+A modern web application built with Next.js for real estate information inquiry through chat interface with interactive map viewing and detailed apartment information.
 
-## ✨ Tính năng
+## ✨ Features
 
-- 🤖 **Chat Interface thông minh** - Tương tác qua AI để tìm kiếm thông tin
-- 🗺️ **Bản đồ tương tác** - Xem vị trí và zoom, pan trên bản đồ dự án
-- 🏢 **Thông tin chi tiết căn hộ** - Dữ liệu đầy đủ về giá, diện tích, vị trí
-- 📊 **Bảng thông tin** - Hiển thị bảng dữ liệu với khả năng tìm kiếm và lọc
-- 🏗️ **Mặt bằng tầng** - Xem chi tiết mặt bằng từng tầng
-- 📱 **Responsive Design** - Tối ưu cho mọi thiết bị
+- 🤖 **Intelligent Chat Interface** - AI-powered interactions for information search
+- 🗺️ **Interactive Map** - View locations with zoom and pan capabilities on project map
+- 🏢 **Detailed Apartment Information** - Complete data including price, area, location
+- 📊 **Information Dashboard** - Data table display with search and filter capabilities
+- 🏗️ **Floor Plans** - Detailed floor plan viewing for each level
+- 📱 **Responsive Design** - Optimized for all devices
 
-## 🚀 Công nghệ sử dụng
+## 🚀 Technology Stack
 
 - **Frontend**: Next.js 15, React 19, TypeScript
 - **Styling**: Tailwind CSS 4
@@ -20,7 +20,7 @@ Một ứng dụng web hiện đại được xây dựng với Next.js để tr
 - **Date Handling**: date-fns
 - **Build Tool**: Turbopack
 
-## 🛠️ Cài đặt và chạy
+## 🛠️ Installation & Setup
 
 ### 1. Clone repository
 
@@ -29,36 +29,36 @@ git clone https://github.com/ducminh0302/real_estate.git
 cd real_estate
 ```
 
-### 2. Cài đặt dependencies
+### 2. Install dependencies
 
 ```bash
 npm install
 ```
 
-### 3. Thiết lập environment variables
+### 3. Setup environment variables
 
 ```bash
 cp .env.example .env.local
 ```
 
-Cập nhật các biến môi trường trong file `.env.local` nếu cần thiết.
+Update environment variables in `.env.local` file if needed.
 
-### 4. Chạy development server
+### 4. Run development server
 
 ```bash
 npm run dev
 ```
 
-Mở [http://localhost:3000](http://localhost:3000) để xem ứng dụng.
+Open [http://localhost:3000](http://localhost:3000) to view the application.
 
-### 5. Build production
+### 5. Build for production
 
 ```bash
 npm run build
 npm start
 ```
 
-## 📁 Cấu trúc dự án
+## 📁 Project Structure
 
 ```
 src/
@@ -89,97 +89,54 @@ public/
 └── *.jpg                # Floor plan images
 ```
 
-## 🎯 Các tính năng chính
+## 🎯 Core Features
 
 ### Chat Interface
-- Giao diện chat hiện đại với AI
-- Lịch sử chat được lưu trữ
-- Trả lời thông minh dựa trên dữ liệu bất động sản
+- Modern chat UI with AI integration
+- Persistent chat history
+- Intelligent responses based on real estate data
 
-### Bản đồ tương tác
-- Zoom in/out, pan với mouse/touch
-- Hiển thị vị trí căn hộ trên bản đồ
-- Click để xem thông tin chi tiết
+### Interactive Map
+- Zoom in/out, pan with mouse/touch
+- Apartment location display on map
+- Click for detailed information
 
-### Tìm kiếm phân cấp
-- Tìm kiếm theo tòa nhà, tầng, căn hộ
+### Hierarchical Search
+- Search by building, floor, apartment
 - Auto-complete suggestions
 - Breadcrumb navigation
 
-### Quản lý dữ liệu
-- Import dữ liệu từ JSON files
-- Xử lý và chuẩn hóa dữ liệu
-- Cache để tối ưu hiệu suất
+### Data Management
+- JSON data file imports
+- Data processing and normalization
+- Caching for performance optimization
 
-## 🔧 Scripts
+## 🔧 Available Scripts
 
-- `npm run dev` - Chạy development server với Turbopack
-- `npm run build` - Build production với optimizations
-- `npm run start` - Chạy production server
-- `npm run lint` - Chạy ESLint để kiểm tra code quality
+- `npm run dev` - Run development server with Turbopack
+- `npm run build` - Build for production with optimizations
+- `npm run start` - Run production server
+- `npm run lint` - Run ESLint for code quality checks
 
-## 🌐 Deploy
+## 📊 Data Sources
 
-### Vercel (Khuyến nghị)
+The project uses JSON data files located in `/public/data/`:
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/ducminh0302/real_estate)
-
-1. Push code lên GitHub repository
-2. Kết nối repository với Vercel
-3. Deploy tự động với mỗi commit
-
-### Manual Deploy
-
-```bash
-npm run build
-```
-
-Upload thư mục `.next`, `public` và các file config cần thiết lên hosting provider.
-
-## 📊 Dữ liệu
-
-Dự án sử dụng các file dữ liệu JSON được đặt trong `/public/data/`:
-
-- `final_labels.json` - Thông tin chi tiết từng căn hộ (giá, diện tích, etc.)
-- `map_normalized.json` - Dữ liệu tọa độ bản đồ đã chuẩn hóa
-- `real-estate-data.json` - Dữ liệu tổng hợp bất động sản
+- `final_labels.json` - Detailed apartment information (price, area, etc.)
+- `map_normalized.json` - Normalized map coordinate data
+- `real-estate-data.json` - Consolidated real estate data
 
 ## 🔧 Customization
 
-### Thêm dữ liệu mới
-1. Cập nhật file JSON trong `/public/data/`
-2. Chạy lại `npm run dev` để reload data
+### Adding New Data
+1. Update JSON files in `/public/data/`
+2. Restart development server to reload data
 
-### Thay đổi giao diện
-- Chỉnh sửa Tailwind classes trong components
-- Cập nhật file `tailwind.config.js` cho custom theme
+### UI Modifications
+- Edit Tailwind classes in components
+- Update `tailwind.config.js` for custom themes
 
-### Tích hợp AI/Chat API
-- Cập nhật `/src/app/api/chat/route.ts`
-- Thêm environment variables cho API keys
+### AI/Chat API Integration
+- Update `/src/app/api/chat/route.ts`
+- Add environment variables for API keys
 
-## 🤝 Đóng góp
-
-1. Fork repository
-2. Tạo feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to branch (`git push origin feature/AmazingFeature`)
-5. Mở Pull Request
-
-## 📝 License
-
-Distributed under the MIT License. See `LICENSE` for more information.
-
-## 📞 Liên hệ
-
-- Email: [your-email@example.com](mailto:your-email@example.com)
-- Project Link: [https://github.com/ducminh0302/real_estate](https://github.com/ducminh0302/real_estate)
-- Live Demo: [https://real-estate-ducminh0302.vercel.app](https://real-estate-ducminh0302.vercel.app)
-
-## 🙏 Acknowledgements
-
-- [Next.js](https://nextjs.org/)
-- [Tailwind CSS](https://tailwindcss.com/)
-- [Lucide Icons](https://lucide.dev/)
-- [Zustand](https://github.com/pmndrs/zustand)
-- [Vercel](https://vercel.com/)
