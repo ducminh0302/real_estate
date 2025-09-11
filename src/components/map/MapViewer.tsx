@@ -301,8 +301,11 @@ const MapViewer = forwardRef<MapViewerRef, MapViewerProps>(({
       // If centerPoint provided, zoom towards that point
       if (centerPoint && containerBounds) {
         const scaleDiff = newScale - prev.scale;
-        newViewState.translateX = prev.translateX - (centerPoint.x * scaleDiff);
-        newViewState.translateY = prev.translateY - (centerPoint.y * scaleDiff);
+        newViewState = {
+          ...newViewState,
+          translateX: prev.translateX - (centerPoint.x * scaleDiff),
+          translateY: prev.translateY - (centerPoint.y * scaleDiff)
+        };
       }
       
       // Apply boundary constraints

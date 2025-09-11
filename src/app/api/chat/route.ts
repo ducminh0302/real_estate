@@ -76,9 +76,3 @@ export async function POST(request: NextRequest) {
     );
   }
 }
-
-// Xử lý rate limiting đơn giản
-export async function middleware(request: NextRequest) {
-  // TODO: Thêm rate limiting logic nếu cần
-  return NextResponse.next();
-}
