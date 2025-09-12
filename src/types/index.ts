@@ -1,17 +1,5 @@
 // Common types for the Real Estate Chat Interface
 
-export interface ChatMessage {
-  id: string;
-  content: string;
-  sender: 'user' | 'assistant';
-  timestamp: Date;
-  isLoading?: boolean;
-  metadata?: {
-    suggestedTab?: string;
-    highlightAreas?: string[];
-  };
-}
-
 export interface Tab {
   id: string;
   title: string;

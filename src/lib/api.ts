@@ -60,46 +60,6 @@ async function apiCall<T>(
   }
 }
 
-// Chat API functions
-export interface ChatMessage {
-  id: string;
-  content: string;
-  sender: 'user' | 'assistant';
-  timestamp: Date;
-  context?: {
-    selectedItems?: unknown[];
-    currentTab?: string;
-    mapSelection?: unknown;
-  };
-}
-
-export interface ChatRequest {
-  message: string;
-  context?: {
-    selectedItems?: unknown[];
-    currentTab?: string;
-    mapSelection?: unknown;
-  };
-  customHeaders?: Record<string, string>;
-}
-
-export interface ChatResponse {
-  message: string;
-  timestamp: string;
-  data?: unknown;
-}
-
-export const chatAPI = {
-  // Gửi tin nhắn chat
-  sendMessage: async (request: ChatRequest): Promise<ChatResponse> => {
-    return apiCall<ChatResponse>('/api/chat', {
-      method: 'POST',
-      body: request,
-      headers: request.customHeaders,
-    });
-  },
-};
-
 // Real Estate API functions
 export interface RealEstateQuery {
   type?: 'districts' | 'buildings' | 'apartments';
@@ -173,7 +133,6 @@ export async function withRetry<T>(
 }
 
 export default {
-  chatAPI,
   realEstateAPI,
   withRetry,
   APIError,

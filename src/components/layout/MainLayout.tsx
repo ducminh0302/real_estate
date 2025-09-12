@@ -1,45 +1,86 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import Header from './Header';
-import ChatSection from './ChatSection';
 import InfoSection from './InfoSection';
-import ChatInput from '../chat/ChatInput';
-import ChatHistory from '../chat/ChatHistory';
+import ChatSection from './ChatSection';
+import ChatInput from './ChatInput';
+import { SearchProvider } from './SearchContext';
+import { LocationSelectionProvider } from './LocationSelectionContext';
 
 export default function MainLayout() {
-  return (
-    <div className="main-grid bg-white">
-      {/* Header */}
-      <Header />
+  const [infoSectionWidth, setInfoSectionWidth] = useState(0);
+  const [mapDimensions, setMapDimensions] = useState({ mapWidth: 0, searchWidth: 0 });
+  
+  useEffect(() => {
+    const updateDimensions = () => {
+      if (typeof window === 'undefined') return;
       
-      {/* Main Content - chứa chat section và info section, chiều cao cố định */}
-      <main className="flex overflow-hidden main-content">
-        {/* Chat Section - bên trái, nhưng KHÔNG bao gồm chat input */}
-        <div className="border-r border-neutral-200 flex flex-col bg-white h-full" style={{ width: '400px' }}>
-          {/* Chat Header */}
-          <div className="border-b border-neutral-200 bg-white px-4 py-2 flex-shrink-0">
-            <h2 className="font-medium text-neutral-900">Trò chuyện</h2>
-            <p className="text-sm text-neutral-500">Tư vấn bất động sản thông minh</p>
-          </div>
+      // Tính toán chiều cao available chính xác - header 64px + margin bottom 66px
+      const reservedHeight = 64 + 66;
+      const availableHeight = window.innerHeight - reservedHeight;
+      
+      // Map aspect ratio gốc
+      const mapAspectRatio = 10567 / 9495;
+      
+      // Map width khi zoom 100% = chiều cao InfoSection
+      const mapWidth = availableHeight * mapAspectRatio;
+      
+      // Tổng chiều rộng mong muốn cho InfoSection 
+      const desiredTotalWidth = mapWidth + 350; // Giảm search width từ 400 -> 350
+      const searchWidth = 350;
+      
+      setInfoSectionWidth(desiredTotalWidth);
+      setMapDimensions({ mapWidth, searchWidth });
+    };
+    
+    updateDimensions();
+    window.addEventListener('resize', updateDimensions);
+    
+    return () => window.removeEventListener('resize', updateDimensions);
+  }, []);
 
-          {/* Chat History - chiếm hết không gian, KHÔNG bao gồm input */}
-          <div className="flex-1 overflow-hidden">
-            <ChatHistory />
+  return (
+    <LocationSelectionProvider>
+      <SearchProvider>
+        <div className="main-grid bg-white">
+          {/* Header */}
+          <Header />
+          
+          {/* Main Content - Không có khoảng trống phía dưới */}
+          <main className="flex overflow-hidden main-content">
+            {/* Phần trên: Chat Section bên trái + Info Section bên phải */}
+            <div className="flex flex-1 overflow-hidden">
+              {/* Chat Section - Chiếm phần trống bên trái */}
+              <div className="flex flex-col flex-1 h-full">
+                <ChatSection />
+              </div>
+              
+              {/* Info Section - chiều rộng cố định, sát lề phải (giữ nguyên như cũ) */}
+              <div 
+                className="h-full flex-shrink-0" 
+                style={{ width: `${infoSectionWidth}px` }}
+              >
+                <InfoSection mapDimensions={mapDimensions} />
+              </div>
+            </div>
+          </main>
+          
+          {/* Chat Input - Phía dưới cùng, có 2 khoảng trống 136px ở 2 bên */}
+          <div className="flex w-full" style={{ height: '66px' }}>
+            {/* Khoảng trống bên trái 136px */}
+            <div style={{ width: '136px' }}></div>
+            
+            {/* Chat Input */}
+            <div className="flex-1">
+              <ChatInput />
+            </div>
+            
+            {/* Khoảng trống bên phải 136px */}
+            <div style={{ width: '136px' }}></div>
           </div>
         </div>
-        
-        {/* Info Section - bên phải, chiều cao cố định từ header đến cuối */}
-        <div className="flex-1 h-full">
-          <InfoSection />
-        </div>
-      </main>
-      
-      {/* Chat Input - riêng biệt ở dưới cùng, span toàn bộ chiều rộng */}
-      <div className="bg-white border-t border-neutral-200" style={{ height: '66px' }}>
-        <div className="h-full w-full">
-          <ChatInput />
-        </div>
-      </div>
-    </div>
+      </SearchProvider>
+    </LocationSelectionProvider>
   );
 }

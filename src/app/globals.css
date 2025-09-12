@@ -25,6 +25,7 @@ body {
   font-family: Arial, Helvetica, sans-serif;
   margin: 0;
   padding: 0;
+  overflow: hidden;
 }
 
 /* Đảm bảo layout không bị overflow */
@@ -32,10 +33,10 @@ body {
   box-sizing: border-box;
 }
 
-/* Đảm bảo grid layout hoạt động đúng - header, main content và chat input */
+/* Đảm bảo grid layout hoạt động đúng - header và main content */
 .main-grid {
   display: grid;
-  grid-template-rows: auto 1fr 66px; /* Header, Main content, Chat input (66px cố định) */
+  grid-template-rows: auto 1fr auto; /* Header, Main content, Chat input */
   height: 100vh;
   min-height: 100vh;
 }
@@ -43,10 +44,4 @@ body {
 /* Main content sẽ tự động điều chỉnh chiều cao dựa trên grid */
 .main-content {
   overflow: hidden;
-  /* Loại bỏ height cố định vì grid sẽ tự động quản lý */
-}
-
-/* Chat input styling */
-.chat-input-container {
-  position: relative;
 }

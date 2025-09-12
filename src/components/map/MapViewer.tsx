@@ -12,10 +12,12 @@ import ArrowPointer from './ArrowPointer';
 
 interface MapViewerProps {
   selectedLocation?: ProcessedLocation;
+  selectedApartmentForHighlight?: ProcessedLocation; // Changed from ProcessedLocation | undefined
   highlightedLocations?: ProcessedLocation[];
   onLocationClick?: (location: ProcessedLocation) => void;
   onZoomChange?: (zoom: number) => void;
   className?: string;
+  mapDimensions?: { mapWidth: number; searchWidth: number };
 }
 
 interface ViewState {
@@ -32,10 +34,12 @@ interface MapViewerRef {
 
 const MapViewer = forwardRef<MapViewerRef, MapViewerProps>(({ 
   selectedLocation, 
+  selectedApartmentForHighlight,
   highlightedLocations = [], 
   onLocationClick,
   onZoomChange,
-  className 
+  className,
+  mapDimensions
 }, ref) => {
   const [viewState, setViewState] = useState<ViewState>({
     scale: 1,
@@ -46,6 +50,7 @@ const MapViewer = forwardRef<MapViewerRef, MapViewerProps>(({
   const [isDragging, setIsDragging] = useState(false);
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
   const [hoveredLocation, setHoveredLocation] = useState<ProcessedLocation | null>(null);
+  const [highlightedLocation, setHighlightedLocation] = useState<ProcessedLocation | undefined>(undefined);
   const [containerBounds, setContainerBounds] = useState<DOMRect | null>(null);
   const [isAnimating, setIsAnimating] = useState(false);
   const [zoomInput, setZoomInput] = useState('');
@@ -58,22 +63,22 @@ const MapViewer = forwardRef<MapViewerRef, MapViewerProps>(({
     autoZoomOnSearchClose: () => {
       if (!imageSize.width || !imageSize.height || !containerBounds) return;
       
-      // Tính toán scale tối ưu cho zoom 2x
-      const imgNaturalRatio = MAP_DIMENSIONS.width / MAP_DIMENSIONS.height;
-      const containerRatio = containerBounds.width / containerBounds.height;
+      // Giữ lại vị trí hiện tại và chỉ áp dụng zoom 2x nếu scale hiện tại < 2
+      const newScale = Math.max(2.0, viewState.scale);
       
-      let baseScale;
-      if (imgNaturalRatio > containerRatio) {
-        baseScale = containerBounds.width / imageSize.width;
-      } else {
-        baseScale = containerBounds.height / imageSize.height;
-      }
+      // Tính toán lại vị trí để giữ tâm view khi zoom
+      const scaleRatio = newScale / viewState.scale;
+      const containerCenterX = containerBounds.width / 2;
+      const containerCenterY = containerBounds.height / 2;
       
-      // Áp dụng zoom 2x trên base scale tối ưu
+      // Tính toán vị trí mới để giữ tâm
+      const newTranslateX = containerCenterX - (containerCenterX - viewState.translateX) * scaleRatio;
+      const newTranslateY = containerCenterY - (containerCenterY - viewState.translateY) * scaleRatio;
+      
       const newViewState = constrainViewState({ 
-        scale: baseScale * 2.0, 
-        translateX: 0, 
-        translateY: 0 
+        scale: newScale, 
+        translateX: newTranslateX, 
+        translateY: newTranslateY 
       });
       setViewState(newViewState);
     }
@@ -87,18 +92,22 @@ const MapViewer = forwardRef<MapViewerRef, MapViewerProps>(({
         setContainerBounds(containerRect);
         
         const imgNaturalRatio = MAP_DIMENSIONS.width / MAP_DIMENSIONS.height;
-        const containerRatio = containerRect.width / containerRect.height;
         
-        // Tính toán để zoom 100% sẽ fit tối đa với container
+        // Sử dụng mapWidth từ props làm kích thước cơ sở cho zoom 100%
         let displayWidth, displayHeight;
-        if (imgNaturalRatio > containerRatio) {
-          // Image rộng hơn container - fit width để tối ưu hóa không gian
-          displayWidth = containerRect.width;
+        if (mapDimensions?.mapWidth) {
+          displayWidth = mapDimensions.mapWidth;
           displayHeight = displayWidth / imgNaturalRatio;
         } else {
-          // Image cao hơn container - fit height để tối ưu hóa không gian  
-          displayHeight = containerRect.height;
-          displayWidth = displayHeight * imgNaturalRatio;
+          // Fallback to old logic if mapDimensions not provided
+          const containerRatio = containerRect.width / containerRect.height;
+          if (imgNaturalRatio > containerRatio) {
+            displayWidth = containerRect.width;
+            displayHeight = displayWidth / imgNaturalRatio;
+          } else {
+            displayHeight = containerRect.height;
+            displayWidth = displayHeight * imgNaturalRatio;
+          }
         }
         
         setImageSize({ width: displayWidth, height: displayHeight });
@@ -108,7 +117,7 @@ const MapViewer = forwardRef<MapViewerRef, MapViewerProps>(({
     updateSizes();
     window.addEventListener('resize', updateSizes);
     return () => window.removeEventListener('resize', updateSizes);
-  }, []);
+  }, [mapDimensions]);
 
   // Keyboard controls
   useEffect(() => {
@@ -166,12 +175,32 @@ const MapViewer = forwardRef<MapViewerRef, MapViewerProps>(({
   }, []);
 
   // Zoom to specific location with smooth animation
-  const zoomToLocation = useCallback((location: ProcessedLocation) => {
+  const zoomToLocation = useCallback(async (location: ProcessedLocation) => {
     if ((!location.polygon_points && !location.bounding_box) || !imageSize.width || !imageSize.height) return;
 
-    // Căn hộ: không zoom, chỉ highlight
-    if (location.type === 'apartment') {
-      return; // Không thực hiện zoom cho căn hộ
+    let targetLocation = location;
+    let isApartmentZoom = false; // Track if this is an apartment zoom (for closer zoom level)
+
+    // Căn hộ: zoom vào tòa nhà chứa nó thay vì chính căn hộ
+    if (location.type === 'apartment' && location.building_name) {
+      // Tìm tòa nhà chứa căn hộ này
+      try {
+        console.log('🏠 Apartment selected, finding building:', location.building_name);
+        const { searchLocations } = await import('@/lib/dataProcessor');
+        const buildingResults = await searchLocations(location.building_name, 'building', 10);
+        
+        if (buildingResults.length > 0) {
+          // Sử dụng tòa nhà làm target để zoom
+          targetLocation = buildingResults[0].location;
+          isApartmentZoom = true; // Mark as apartment zoom for closer level
+          console.log('🏢 Found building for apartment zoom:', targetLocation.name);
+        } else {
+          console.log('⚠️ No building found, using apartment location as fallback');
+        }
+      } catch (error) {
+        console.error('Error finding building for apartment:', error);
+        // Fallback: nếu không tìm được tòa nhà, vẫn dùng căn hộ
+      }
     }
 
     setIsAnimating(true);
@@ -180,12 +209,12 @@ const MapViewer = forwardRef<MapViewerRef, MapViewerProps>(({
     let bboxWidth: number;
     let bboxHeight: number;
 
-    if (location.polygon_points && location.polygon_points.length > 0) {
+    if (targetLocation.polygon_points && targetLocation.polygon_points.length > 0) {
       // Convert polygon coordinates to image coordinates
       const scaleX = imageSize.width / MAP_DIMENSIONS.width;
       const scaleY = imageSize.height / MAP_DIMENSIONS.height;
       
-      const imagePolygonPoints = location.polygon_points.map(point => ({
+      const imagePolygonPoints = targetLocation.polygon_points.map(point => ({
         x: point.x * scaleX,
         y: point.y * scaleY
       }));
@@ -201,7 +230,7 @@ const MapViewer = forwardRef<MapViewerRef, MapViewerProps>(({
     } else {
       // Fallback to bounding box method
       const imageBbox = mapBoundingBoxToImage(
-        location.bounding_box!,
+        targetLocation.bounding_box!,
         MAP_DIMENSIONS,
         imageSize
       );
@@ -211,11 +240,22 @@ const MapViewer = forwardRef<MapViewerRef, MapViewerProps>(({
       bboxHeight = imageBbox.y_max - imageBbox.y_min;
     }
 
-    // Determine expansion based on location type
+    // Determine expansion based on target location type and zoom context
     let expansionPercent = 0;
-    if (location.type === 'zone') expansionPercent = 0;         // 0% expansion - fit exact bounding box
-    else if (location.type === 'building') expansionPercent = 300;  // 300% expansion - giữ nguyên
-    else if (location.type === 'apartment') expansionPercent = 300; // 300% expansion (không dùng vì đã return early)
+    if (targetLocation.type === 'zone') {
+      expansionPercent = 0;         // 0% expansion - fit exact bounding box
+    } else if (targetLocation.type === 'building') {
+      if (isApartmentZoom) {
+        expansionPercent = 150;     // 150% expansion - zoom gần hơn khi chọn căn hộ
+        console.log('📏 Apartment zoom: using 150% expansion for building');
+      } else {
+        expansionPercent = 200;     // 200% expansion - zoom bình thường khi chọn tòa nhà trực tiếp
+        console.log('📏 Building zoom: using 200% expansion');
+      }
+    } else if (targetLocation.type === 'apartment') {
+      expansionPercent = 150;       // 150% expansion (trường hợp fallback khi không tìm được tòa nhà)
+      console.log('📏 Apartment fallback: using 150% expansion');
+    }
 
     // Apply expansion to bounding box dimensions
     const expandedWidth = bboxWidth * (1 + expansionPercent / 100);
@@ -230,8 +270,8 @@ const MapViewer = forwardRef<MapViewerRef, MapViewerProps>(({
 
     // Calculate translation to center the polygon centroid
     let offsetPercent = 0.05; // Default offset cho building
-    if (location.type === 'zone') offsetPercent = 0;       // 0% offset - center hoàn toàn cho phân khu 
-    else if (location.type === 'building') offsetPercent = 0.05;  // 5% offset cho tòa nhà
+    if (targetLocation.type === 'zone') offsetPercent = 0;       // 0% offset - center hoàn toàn cho phân khu 
+    else if (targetLocation.type === 'building') offsetPercent = 0.05;  // 5% offset cho tòa nhà
     
     const offsetX = containerRect.width * offsetPercent;
     const offsetY = containerRect.height * offsetPercent;
@@ -248,9 +288,24 @@ const MapViewer = forwardRef<MapViewerRef, MapViewerProps>(({
   // Auto-zoom when selected location changes
   useEffect(() => {
     if (selectedLocation) {
-      zoomToLocation(selectedLocation);
+      zoomToLocation(selectedLocation).catch(error => {
+        console.error('Error during zoom:', error);
+      });
     }
   }, [selectedLocation, zoomToLocation]);
+
+  // Update highlight when selectedApartmentForHighlight changes
+  useEffect(() => {
+    if (selectedApartmentForHighlight) {
+      setHighlightedLocation(selectedApartmentForHighlight);
+    } else if (selectedLocation && selectedLocation.type !== 'apartment') {
+      // If no specific apartment to highlight, highlight the selectedLocation (if it's not an apartment itself)
+      setHighlightedLocation(selectedLocation);
+    } else {
+      // If selectedLocation is an apartment and no specific highlight, clear highlight
+      setHighlightedLocation(undefined);
+    }
+  }, [selectedApartmentForHighlight, selectedLocation]);
 
   const constrainViewState = (newViewState: ViewState): ViewState => {
     if (!containerBounds || !imageSize.width) return newViewState;
@@ -263,8 +318,8 @@ const MapViewer = forwardRef<MapViewerRef, MapViewerProps>(({
     
     // Constrain X axis - đảm bảo map không bị lộ khoảng trống
     if (scaledImageWidth <= containerBounds.width) {
-      // Nếu ảnh nhỏ hơn container, căn trái thay vì center
-      constrainedX = 0;
+      // Nếu ảnh nhỏ hơn container, căn giữa thay vì căn trái
+      constrainedX = (containerBounds.width - scaledImageWidth) / 2;
     } else {
       // Nếu ảnh lớn hơn container, đảm bảo không lộ khoảng trống
       // Cạnh trái không được vượt quá 0
@@ -275,8 +330,8 @@ const MapViewer = forwardRef<MapViewerRef, MapViewerProps>(({
     
     // Constrain Y axis - tương tự với trục Y
     if (scaledImageHeight <= containerBounds.height) {
-      // Nếu ảnh nhỏ hơn container, căn trên thay vì center
-      constrainedY = 0;
+      // Nếu ảnh nhỏ hơn container, căn giữa thay vì căn trên
+      constrainedY = (containerBounds.height - scaledImageHeight) / 2;
     } else {
       // Nếu ảnh lớn hơn container, đảm bảo không lộ khoảng trống
       // Cạnh trên không được vượt quá 0
@@ -296,19 +351,45 @@ const MapViewer = forwardRef<MapViewerRef, MapViewerProps>(({
     setViewState(prev => {
       const newScale = Math.max(1.0, Math.min(15, prev.scale + delta));
       
-      let newViewState = { ...prev, scale: newScale };
-      
       // If centerPoint provided, zoom towards that point
       if (centerPoint && containerBounds) {
-        const scaleDiff = newScale - prev.scale;
-        newViewState = {
-          ...newViewState,
-          translateX: prev.translateX - (centerPoint.x * scaleDiff),
-          translateY: prev.translateY - (centerPoint.y * scaleDiff)
+        // Tính toán vị trí mới để zoom vào tâm
+        const scaleRatio = newScale / prev.scale;
+        const newTranslateX = centerPoint.x - (centerPoint.x - prev.translateX) * scaleRatio;
+        const newTranslateY = centerPoint.y - (centerPoint.y - prev.translateY) * scaleRatio;
+        
+        const newViewState = {
+          scale: newScale,
+          translateX: newTranslateX,
+          translateY: newTranslateY
         };
+        
+        // Apply boundary constraints
+        return constrainViewState(newViewState);
+      } else {
+        // Zoom vào tâm view hiện tại nếu không có centerPoint
+        const containerRect = containerRef.current?.getBoundingClientRect();
+        if (containerRect) {
+          const centerX = containerRect.width / 2;
+          const centerY = containerRect.height / 2;
+          
+          const scaleRatio = newScale / prev.scale;
+          const newTranslateX = centerX - (centerX - prev.translateX) * scaleRatio;
+          const newTranslateY = centerY - (centerY - prev.translateY) * scaleRatio;
+          
+          const newViewState = {
+            scale: newScale,
+            translateX: newTranslateX,
+            translateY: newTranslateY
+          };
+          
+          // Apply boundary constraints
+          return constrainViewState(newViewState);
+        }
       }
       
-      // Apply boundary constraints
+      // Fallback nếu không có container bounds
+      const newViewState = { ...prev, scale: newScale };
       return constrainViewState(newViewState);
     });
   };
@@ -419,10 +500,33 @@ const MapViewer = forwardRef<MapViewerRef, MapViewerProps>(({
 
     // Uniform color system for all entity types - đồng nhất cho tất cả loại
     const getColors = (type: string, selected: boolean, hovered: boolean) => {
-      // Sử dụng cùng một bộ màu xanh dương cho tất cả loại entity với nét mảnh hơn
+      // Sử dụng cùng một bộ màu cho tất cả loại entity với độ dày nét phù hợp
+      let strokeWidth, fill;
+      
+      // Điều chỉnh độ dày theo loại entity
+      if (type === 'apartment') {
+        // Căn hộ: nét mỏng
+        strokeWidth = selected ? 0.25 : hovered ? 0.2 : 0.15;
+      } else if (type === 'building') {
+        // Tòa nhà: nét dày hơn căn hộ
+        strokeWidth = selected ? 0.35 : hovered ? 0.3 : 0.25;
+      } else {
+        // Phân khu: nét dày nhất
+        strokeWidth = selected ? 0.45 : hovered ? 0.4 : 0.35;
+      }
+      
+      // Fill color chỉ áp dụng cho selected và hovered, nhưng không áp dụng cho phân khu khi selected
+      if (type === 'zone' && selected) {
+        // Không fill màu cho phân khu khi selected
+        fill = 'none';
+      } else {
+        fill = selected ? 'rgba(37, 99, 235, 0.1)' : hovered ? 'rgba(59, 130, 246, 0.05)' : 'none';
+      }
+      
       const uniformColors = {
         stroke: selected ? '#2563eb' : hovered ? '#3b82f6' : '#93c5fd',
-        strokeWidth: selected ? 0.3 : hovered ? 0.2 : 0.1  // Giảm độ dày nét xuống để mảnh hơn
+        strokeWidth,
+        fill
       };
       return uniformColors;
     };
@@ -489,11 +593,11 @@ const MapViewer = forwardRef<MapViewerRef, MapViewerProps>(({
           {/* Polygon outline */}
           <polygon
             points={pointsString}
-            fill="none"
+            fill={colors.fill}
             stroke={colors.stroke}
             strokeWidth={colors.strokeWidth}
-            strokeDasharray={isSelected ? "none" : isHovered ? "2,1" : "1,1"}
-            className="transition-all duration-300"
+            strokeDasharray={isSelected ? "none" : isHovered ? "2,2" : "1,2"}
+            className="transition-all duration-200 ease-out"
           />
         </svg>
 
@@ -533,7 +637,7 @@ const MapViewer = forwardRef<MapViewerRef, MapViewerProps>(({
         style={{
           transform: `translate(${viewState.translateX}px, ${viewState.translateY}px) scale(${viewState.scale})`,
           transformOrigin: '0 0',
-          transition: isDragging || isAnimating ? 'none' : 'transform 0.5s cubic-bezier(0.4, 0, 0.2, 1)'
+          transition: isDragging ? 'none' : 'transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1)'
         }}
         onMouseDown={handleMouseDown}
         onMouseMove={handleMouseMove}
@@ -579,8 +683,11 @@ const MapViewer = forwardRef<MapViewerRef, MapViewerProps>(({
           {/* Highlighted locations */}
           {highlightedLocations.map(location => renderBoundingBox(location, false))}
           
-          {/* Selected location */}
-          {selectedLocation && renderBoundingBox(selectedLocation, true)}
+          {/* Individual highlighted location - render as selected for visibility */}
+          {highlightedLocation && renderBoundingBox(highlightedLocation, true)}
+          
+          {/* Selected location - only render if different from highlighted location */}
+          {selectedLocation && selectedLocation.id !== highlightedLocation?.id && renderBoundingBox(selectedLocation, true)}
         </>
       </div>
 
@@ -617,8 +724,8 @@ const MapViewer = forwardRef<MapViewerRef, MapViewerProps>(({
             );
           })}
           
-          {/* Selected location arrow */}
-          {selectedLocation && (selectedLocation.polygon_points || selectedLocation.bounding_box) && (
+          {/* Selected location arrow - only render if different from highlighted location */}
+          {selectedLocation && selectedLocation.id !== highlightedLocation?.id && (selectedLocation.polygon_points || selectedLocation.bounding_box) && (
             (() => {
               let center: Point;
               if (selectedLocation.polygon_points && selectedLocation.polygon_points.length > 0) {
@@ -638,6 +745,36 @@ const MapViewer = forwardRef<MapViewerRef, MapViewerProps>(({
                 <ArrowPointer
                   key={`arrow-selected-${selectedLocation.id}`}
                   location={selectedLocation}
+                  center={center}
+                  containerBounds={containerBounds}
+                  viewState={viewState}
+                  onClick={onLocationClick}
+                />
+              );
+            })()
+          )}
+          
+          {/* Individual highlighted location arrow */}
+          {highlightedLocation && (highlightedLocation.polygon_points || highlightedLocation.bounding_box) && (
+            (() => {
+              let center: Point;
+              if (highlightedLocation.polygon_points && highlightedLocation.polygon_points.length > 0) {
+                const scaleX = imageSize.width / MAP_DIMENSIONS.width;
+                const scaleY = imageSize.height / MAP_DIMENSIONS.height;
+                const imagePolygonPoints = highlightedLocation.polygon_points.map(point => ({
+                  x: point.x * scaleX,
+                  y: point.y * scaleY
+                }));
+                center = getPolygonCentroid(imagePolygonPoints);
+              } else {
+                const imageBbox = mapBoundingBoxToImage(highlightedLocation.bounding_box!, MAP_DIMENSIONS, imageSize);
+                center = getBoundingBoxCenter(imageBbox);
+              }
+              
+              return (
+                <ArrowPointer
+                  key={`arrow-highlight-${highlightedLocation.id}`}
+                  location={highlightedLocation}
                   center={center}
                   containerBounds={containerBounds}
                   viewState={viewState}

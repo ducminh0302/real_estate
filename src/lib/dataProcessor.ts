@@ -23,11 +23,15 @@ export async function loadRealEstateData(): Promise<RealEstateData> {
 
   try {
     const response = await fetch('/data/final_labels.json');
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
     const data: RealEstateData = await response.json();
     realEstateDataCache = data;
+    console.log('✅ Real estate data loaded successfully');
     return data;
   } catch (error) {
-    console.error('Error loading real estate data:', error);
+    console.error('❌ Error loading real estate data:', error);
     throw new Error('Failed to load real estate data');
   }
 }
@@ -102,7 +106,7 @@ export async function processAndCombineData(): Promise<ProcessedLocation[]> {
         processedLocations.push(location);
       });
 
-      // Xử lý buildings trong zone
+      // Xử lý từng building trong zone
       Object.entries(zone.buildings).forEach(([buildingKey, building]) => {
         console.log(`  🏢 Processing building: ${building.building_name}`);
         
@@ -123,27 +127,31 @@ export async function processAndCombineData(): Promise<ProcessedLocation[]> {
           };
           processedLocations.push(location);
         });
-
-        // Xử lý apartments trong building  
+        
+        // Xử lý từng apartment trong building
         building.apartment_labels.forEach((apartmentLabel, index) => {
-          if (index < 3) { // Log first 3 apartments only
-            const coordinates = mapAnnotationsLookup.get(apartmentLabel.original_label.toLowerCase());
-            console.log(`    🏠 Apartment "${apartmentLabel.original_label}" -> coordinates: ${coordinates ? 'Found' : 'NOT FOUND'}`);
+          if (index < 3) { // Log first 3 apartments only  
+            console.log(`    🏠 Processing apartment: ${apartmentLabel.apartment_number}`);
           }
           
-          const coordinates = mapAnnotationsLookup.get(apartmentLabel.original_label.toLowerCase());
-          const location: ProcessedLocation = {
-            id: `apartment-${zoneKey.replace(/\s+/g, '-')}-${buildingKey}-${apartmentLabel.apartment_number}`,
+          const apartmentCoordinates = mapAnnotationsLookup.get(apartmentLabel.original_label.toLowerCase());
+          if (index < 3) {
+            console.log(`      🔍 Apartment "${apartmentLabel.original_label}" -> coordinates: ${apartmentCoordinates ? 'Found' : 'NOT FOUND'}`);
+          }
+          
+          const apartmentLocation: ProcessedLocation = {
+            id: `apartment-${zoneKey.replace(/\s+/g, '-')}-${buildingKey.replace(/\s+/g, '-')}-${apartmentLabel.apartment_number}`,
             type: 'apartment',
             name: `Căn ${apartmentLabel.apartment_number}`,
             zone_name: zone.zone_name,
             building_name: building.building_name,
             apartment_number: apartmentLabel.apartment_number,
             original_label: apartmentLabel.original_label,
-            polygon_points: coordinates,
-            bounding_box: coordinates ? coordinatesToBoundingBox(coordinates) : undefined
+            polygon_points: apartmentCoordinates,
+            bounding_box: apartmentCoordinates ? coordinatesToBoundingBox(apartmentCoordinates) : undefined
           };
-          processedLocations.push(location);
+          
+          processedLocations.push(apartmentLocation);
         });
         
         if (building.apartment_labels.length > 3) {
@@ -152,10 +160,13 @@ export async function processAndCombineData(): Promise<ProcessedLocation[]> {
       });
     });
 
-    console.log(`\n✅ Processed ${processedLocations.length} total locations`);
-    console.log(`📍 Locations with coordinates: ${processedLocations.filter(l => l.bounding_box).length}`);
-    console.log(`❌ Locations without coordinates: ${processedLocations.filter(l => !l.bounding_box).length}`);
-    
+    console.log(`✅ Processing complete! Generated ${processedLocations.length} locations`);
+    console.log(`📊 Breakdown: 
+      Zones: ${processedLocations.filter(l => l.type === 'zone').length}
+      Buildings: ${processedLocations.filter(l => l.type === 'building').length}
+      Apartments: ${processedLocations.filter(l => l.type === 'apartment').length}
+    `);
+
     processedDataCache = processedLocations;
     return processedLocations;
     
@@ -183,11 +194,6 @@ export async function searchLocations(
   const results: SearchResult[] = [];
 
   locations.forEach(location => {
-    // Filter by type if specified
-    if (type && location.type !== type) {
-      return;
-    }
-
     // Skip locations without bounding box (not found on map)
     if (!location.bounding_box) {
       return;
@@ -196,37 +202,97 @@ export async function searchLocations(
     let score = 0;
     let matchType: 'exact' | 'partial' | 'fuzzy' = 'fuzzy';
 
-    // Exact match trong name
+    // === ENHANCED SEARCH LOGIC ===
+    
+    // 1. Exact match trong name
     if (location.name.toLowerCase() === queryLower) {
       score = 100;
       matchType = 'exact';
     }
-    // Exact match trong original label
+    // 2. Exact match trong original label
     else if (location.original_label.toLowerCase() === queryLower) {
       score = 95;
       matchType = 'exact';
     }
-    // Partial match trong name
+    // 3. Cross-level search: tìm apartment có zone name trong query
+    // Ví dụ: "Glory Heights GH-01 3" -> tìm apartment "GH-01 3" trong zone "Glory Heights"
+    else if (location.type === 'apartment' && queryLower.includes(' ')) {
+      const queryParts = queryLower.split(' ');
+      const zoneName = location.zone_name?.toLowerCase() || '';
+      const apartmentName = location.name.toLowerCase();
+      
+      // Kiểm tra nếu query chứa zone name và apartment name
+      const zoneWords = zoneName.split(' ');
+      const hasZoneMatch = zoneWords.some(zoneWord => 
+        zoneWord.length > 2 && queryLower.includes(zoneWord)
+      );
+      
+      // Kiểm tra apartment name match
+      const apartmentWords = apartmentName.split(' ');
+      const hasApartmentMatch = apartmentWords.every(apartmentWord =>
+        queryLower.includes(apartmentWord.toLowerCase())
+      );
+      
+      if (hasZoneMatch && hasApartmentMatch) {
+        score = 90;
+        matchType = 'exact';
+      }
+      // Nếu chỉ có apartment match nhưng query có nhiều từ (có thể có zone name)
+      else if (hasApartmentMatch && queryParts.length > 2) {
+        score = 85;
+        matchType = 'partial';
+      }
+    }
+    // 4. Cross-level search: tìm building có zone name trong query
+    // Ví dụ: "Glory Heights GH-01" -> tìm building "GH-01" trong zone "Glory Heights"
+    else if (location.type === 'building' && queryLower.includes(' ')) {
+      const zoneName = location.zone_name?.toLowerCase() || '';
+      const buildingName = location.name.toLowerCase();
+      
+      const zoneWords = zoneName.split(' ');
+      const hasZoneMatch = zoneWords.some(zoneWord => 
+        zoneWord.length > 2 && queryLower.includes(zoneWord)
+      );
+      
+      const hasBuildingMatch = queryLower.includes(buildingName);
+      
+      if (hasZoneMatch && hasBuildingMatch) {
+        score = 88;
+        matchType = 'exact';
+      }
+    }
+    // 5. Partial match trong name
     else if (location.name.toLowerCase().includes(queryLower)) {
       score = 80;
       matchType = 'partial';
     }
-    // Partial match trong original label
+    // 6. Partial match trong original label
     else if (location.original_label.toLowerCase().includes(queryLower)) {
       score = 75;
       matchType = 'partial';
     }
-    // Fuzzy match trong zone/building names
+    // 7. Fuzzy match trong zone/building names và apartment number
     else if (
       location.zone_name?.toLowerCase().includes(queryLower) ||
       location.building_name?.toLowerCase().includes(queryLower) ||
-      location.apartment_number?.includes(query)
+      location.apartment_number?.toLowerCase().trim().includes(queryLower)
     ) {
       score = 60;
       matchType = 'fuzzy';
     }
 
+    // Apply type filter after scoring but boost score if matches requested type
     if (score > 0) {
+      // If type filter is specified, only include matching types
+      if (type && location.type !== type) {
+        return;
+      }
+      
+      // Boost score if matches the requested type
+      if (type && location.type === type) {
+        score += 5;
+      }
+
       results.push({
         location,
         score,

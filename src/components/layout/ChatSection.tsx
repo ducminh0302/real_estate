@@ -1,53 +1,58 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import ChatHistory from '../chat/ChatHistory';
+import { useRef, useEffect } from 'react';
+import ChatMessage from '@/components/ui/ChatMessage';
+import { useChatStore } from '@/lib/store/chatStore';
+import { useSearch } from './SearchContext';
 
-interface ChatSectionProps {
-  className?: string;
-}
+export default function ChatSection() {
+  const { messages, isLoading } = useChatStore();
+  const { setSearchTerm } = useSearch();
+  const messagesEndRef = useRef<null | HTMLDivElement>(null);
 
-export default function ChatSection({ className = '' }: ChatSectionProps) {
-  const [chatWidth, setChatWidth] = useState(0);
-  
+  // Hàm để tự động scroll xuống tin nhắn mới nhất
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  // Gọi scrollToBottom mỗi khi messages thay đổi
   useEffect(() => {
-    const updateDimensions = () => {
-      if (typeof window === 'undefined') return;
-      
-      // Tính toán chiều cao available chính xác - header 64px + chat input 80px = 144px
-      const reservedHeight = 144;
-      const availableHeight = window.innerHeight - reservedHeight;
-      
-      // Tính width dựa trên chiều cao available thực tế
-      const searchWidth = 400;
-      const mapAspectRatio = 10567 / 9495;
-      const mapWidth = availableHeight * mapAspectRatio;
-      const totalInfoWidth = mapWidth + searchWidth;
-      const calculatedChatWidth = window.innerWidth - totalInfoWidth - 10;
-      setChatWidth(Math.max(300, calculatedChatWidth));
-    };
-    
-    updateDimensions();
-    window.addEventListener('resize', updateDimensions);
-    
-    return () => window.removeEventListener('resize', updateDimensions);
-  }, []);
+    scrollToBottom();
+  }, [messages, isLoading]);
+
+  const handleSearch = (searchTerm: string) => {
+    setSearchTerm(searchTerm);
+  };
 
   return (
-    <section 
-      className={`border-r border-neutral-200 flex flex-col bg-white h-full ${className}`}
-      style={{ width: chatWidth || 300 }}
-    >
-      {/* Chat Header */}
-      <div className="border-b border-neutral-200 bg-white px-4 py-2 flex-shrink-0">
-        <h2 className="font-medium text-neutral-900">Trò chuyện</h2>
-        <p className="text-sm text-neutral-500">Tư vấn bất động sản thông minh</p>
+    <div className="flex flex-col h-full bg-gray-50 border-r border-gray-200">
+      {/* Header của chat section */}
+      <div className="border-b border-gray-200 p-4 bg-white flex-shrink-0">
+        <h2 className="text-lg font-semibold text-gray-800">Trò chuyện</h2>
       </div>
-
-      {/* Chat History - Chiếm hết không gian còn lại */}
-      <div className="flex-1 overflow-hidden">
-        <ChatHistory />
+      
+      {/* Container cho các tin nhắn */}
+      <div className="flex-1 overflow-y-auto p-4 space-y-4">
+        {messages.map((message) => (
+          <ChatMessage
+            key={message.id}
+            sender={message.sender}
+            content={message.content}
+            timestamp={message.timestamp}
+            objectData={message.objectData}
+            onSearch={handleSearch}
+          />
+        ))}
+        {isLoading && (
+          <ChatMessage
+            sender="bot"
+            content=""
+            timestamp={new Date()}
+            isLoading={true}
+          />
+        )}
+        <div ref={messagesEndRef} />
       </div>
-    </section>
+    </div>
   );
 }

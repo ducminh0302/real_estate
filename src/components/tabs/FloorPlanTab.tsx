@@ -3,7 +3,11 @@
 import { useState, useRef, useEffect } from 'react';
 import { ZoomIn, ZoomOut, RotateCcw, Building } from 'lucide-react';
 
-export default function FloorPlanTab() {
+interface FloorPlanTabProps {
+  mapDimensions?: { mapWidth: number; searchWidth: number };
+}
+
+export default function FloorPlanTab({ mapDimensions }: FloorPlanTabProps) {
   const [zoom, setZoom] = useState<number>(1); // Mặc định 100%
   const [position, setPosition] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState<boolean>(false);
