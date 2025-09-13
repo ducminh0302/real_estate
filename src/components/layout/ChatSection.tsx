@@ -6,7 +6,7 @@ import { useChatStore } from '@/lib/store/chatStore';
 import { useSearch } from './SearchContext';
 
 export default function ChatSection() {
-  const { messages, isLoading } = useChatStore();
+  const { messages, isLoading, clearMessages } = useChatStore();
   const { setSearchTerm } = useSearch();
   const messagesEndRef = useRef<null | HTMLDivElement>(null);
 
@@ -24,11 +24,26 @@ export default function ChatSection() {
     setSearchTerm(searchTerm);
   };
 
+  // Hàm để tạo lại sessionId (xóa tin nhắn và tạo session mới)
+  const handleClearChat = () => {
+    // Xóa sessionId trong sessionStorage để tạo mới
+    sessionStorage.removeItem('chatSessionId');
+    // Clear messages
+    clearMessages();
+  };
+
   return (
     <div className="flex flex-col h-full bg-gray-50 border-r border-gray-200">
       {/* Header của chat section */}
-      <div className="border-b border-gray-200 p-4 bg-white flex-shrink-0">
+      <div className="border-b border-gray-200 p-4 bg-white flex-shrink-0 flex justify-between items-center">
         <h2 className="text-lg font-semibold text-gray-800">Trò chuyện</h2>
+        <button 
+          onClick={handleClearChat}
+          className="text-sm text-blue-500 hover:text-blue-700"
+          title="Bắt đầu cuộc trò chuyện mới"
+        >
+          Cuộc trò chuyện mới
+        </button>
       </div>
       
       {/* Container cho các tin nhắn */}

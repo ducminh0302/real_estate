@@ -3,10 +3,12 @@
 import { useState } from 'react';
 import { Send, Paperclip, Image, Mic } from 'lucide-react';
 import { useChatStore } from '@/lib/store/chatStore';
+import { useSessionId } from '@/hooks/useSessionId';
 
 export default function ChatInput() {
   const [inputValue, setInputValue] = useState('');
   const { addMessage, setLoading } = useChatStore();
+  const sessionId = useSessionId();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -32,7 +34,7 @@ export default function ChatInput() {
             'Content-Type': 'application/json'
           },
           body: JSON.stringify({
-            sessionId: 'test-session-123', // SessionId cố định để test
+            sessionId: sessionId, // Sử dụng sessionId động
             chatInput: userMessage
           })
         });

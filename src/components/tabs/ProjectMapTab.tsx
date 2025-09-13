@@ -83,7 +83,6 @@ export default function ProjectMapTab({ mapDimensions }: ProjectMapTabProps) {
               
               if (exactMatch) {
                 setSelectedApartmentForHighlight(exactMatch.location);
-                setSelectedLocation(exactMatch.location);
                 return;
               }
             }
@@ -106,7 +105,6 @@ export default function ProjectMapTab({ mapDimensions }: ProjectMapTabProps) {
               // Update the map based on the type of location found
               if (bestMatch.type === 'apartment') {
                 setSelectedApartmentForHighlight(bestMatch);
-                setSelectedLocation(bestMatch);
               } else {
                 setSelectedLocation(bestMatch);
                 setSelectedApartmentForHighlight(undefined);

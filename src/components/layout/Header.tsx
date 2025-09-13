@@ -2,7 +2,6 @@
 
 import { FileText, Map, Home } from 'lucide-react';
 import { useTabStore } from '@/lib/store/tabStore';
-import ApiStatus from '@/components/ui/ApiStatus';
 
 export default function Header() {
   const { activeTab, setActiveTab } = useTabStore();
@@ -25,9 +24,6 @@ export default function Header() {
               Real Estate Chat Interface
             </h1>
           </div>
-          
-          {/* API Status */}
-          <ApiStatus />
         </div>
         
         {/* Tabs moved to header */}

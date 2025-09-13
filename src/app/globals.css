@@ -45,3 +45,26 @@ body {
 .main-content {
   overflow: hidden;
 }
+
+/* Animation cho highlight */
+@keyframes highlight-pulse {
+  0% {
+    stroke-opacity: 1;
+    stroke-width: 0.3;
+    filter: drop-shadow(0 0 3px rgba(255, 51, 51, 0.7));
+  }
+  50% {
+    stroke-opacity: 0.9;
+    stroke-width: 0.5;
+    filter: drop-shadow(0 0 6px rgba(255, 51, 51, 1));
+  }
+  100% {
+    stroke-opacity: 1;
+    stroke-width: 0.3;
+    filter: drop-shadow(0 0 3px rgba(255, 51, 51, 0.7));
+  }
+}
+
+.animate-highlight {
+  animation: highlight-pulse 2s infinite;
+}

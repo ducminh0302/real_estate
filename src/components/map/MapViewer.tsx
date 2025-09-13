@@ -294,10 +294,14 @@ const MapViewer = forwardRef<MapViewerRef, MapViewerProps>(({
     }
   }, [selectedLocation, zoomToLocation]);
 
-  // Update highlight when selectedApartmentForHighlight changes
+  // Update highlight and zoom when selectedApartmentForHighlight changes
   useEffect(() => {
     if (selectedApartmentForHighlight) {
       setHighlightedLocation(selectedApartmentForHighlight);
+      // Zoom to the apartment when selected from chat
+      zoomToLocation(selectedApartmentForHighlight).catch(error => {
+        console.error('Error during zoom to apartment:', error);
+      });
     } else if (selectedLocation && selectedLocation.type !== 'apartment') {
       // If no specific apartment to highlight, highlight the selectedLocation (if it's not an apartment itself)
       setHighlightedLocation(selectedLocation);
@@ -305,7 +309,7 @@ const MapViewer = forwardRef<MapViewerRef, MapViewerProps>(({
       // If selectedLocation is an apartment and no specific highlight, clear highlight
       setHighlightedLocation(undefined);
     }
-  }, [selectedApartmentForHighlight, selectedLocation]);
+  }, [selectedApartmentForHighlight, selectedLocation, zoomToLocation]);
 
   const constrainViewState = (newViewState: ViewState): ViewState => {
     if (!containerBounds || !imageSize.width) return newViewState;
@@ -503,28 +507,24 @@ const MapViewer = forwardRef<MapViewerRef, MapViewerProps>(({
       // Sử dụng cùng một bộ màu cho tất cả loại entity với độ dày nét phù hợp
       let strokeWidth, fill;
       
-      // Điều chỉnh độ dày theo loại entity
+      // Điều chỉnh độ dày theo loại entity - trạng thái hẹp nhất (mảnh hơn 40%)
       if (type === 'apartment') {
-        // Căn hộ: nét mỏng
-        strokeWidth = selected ? 0.25 : hovered ? 0.2 : 0.15;
+        // Căn hộ: nét mỏng hơn 20%
+        strokeWidth = selected ? 0.096 : hovered ? 0.08 : 0.064;
       } else if (type === 'building') {
-        // Tòa nhà: nét dày hơn căn hộ
-        strokeWidth = selected ? 0.35 : hovered ? 0.3 : 0.25;
+        // Tòa nhà: nét dày hơn 10%
+        strokeWidth = selected ? 0.176 : hovered ? 0.154 : 0.132;
       } else {
-        // Phân khu: nét dày nhất
-        strokeWidth = selected ? 0.45 : hovered ? 0.4 : 0.35;
+        // Phân khu: nét dày hơn 30%
+        strokeWidth = selected ? 0.26 : hovered ? 0.234 : 0.208;
       }
       
-      // Fill color chỉ áp dụng cho selected và hovered, nhưng không áp dụng cho phân khu khi selected
-      if (type === 'zone' && selected) {
-        // Không fill màu cho phân khu khi selected
-        fill = 'none';
-      } else {
-        fill = selected ? 'rgba(37, 99, 235, 0.1)' : hovered ? 'rgba(59, 130, 246, 0.05)' : 'none';
-      }
+      // Không fill màu cho bất kỳ loại nào khi highlight
+      fill = 'none';
       
+      // Màu stroke đỏ thiên sáng hơn với độ sáng cao hơn
       const uniformColors = {
-        stroke: selected ? '#2563eb' : hovered ? '#3b82f6' : '#93c5fd',
+        stroke: selected ? '#ff3333' : hovered ? '#3b82f6' : '#93c5fd', // Màu đỏ sáng hơn cho selected
         strokeWidth,
         fill
       };
@@ -597,7 +597,7 @@ const MapViewer = forwardRef<MapViewerRef, MapViewerProps>(({
             stroke={colors.stroke}
             strokeWidth={colors.strokeWidth}
             strokeDasharray={isSelected ? "none" : isHovered ? "2,2" : "1,2"}
-            className="transition-all duration-200 ease-out"
+            className={`transition-all duration-200 ease-out ${isSelected ? 'animate-highlight' : ''}`}
           />
         </svg>
 
