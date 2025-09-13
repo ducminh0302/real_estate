@@ -505,7 +505,7 @@ const MapViewer = forwardRef<MapViewerRef, MapViewerProps>(({
     // Uniform color system for all entity types - đồng nhất cho tất cả loại
     const getColors = (type: string, selected: boolean, hovered: boolean) => {
       // Sử dụng cùng một bộ màu cho tất cả loại entity với độ dày nét phù hợp
-      let strokeWidth, fill;
+      let strokeWidth;
       
       // Điều chỉnh độ dày theo loại entity - trạng thái hẹp nhất (mảnh hơn 40%)
       if (type === 'apartment') {
@@ -520,7 +520,7 @@ const MapViewer = forwardRef<MapViewerRef, MapViewerProps>(({
       }
       
       // Không fill màu cho bất kỳ loại nào khi highlight
-      fill = 'none';
+      const fill = 'none';
       
       // Màu stroke đỏ thiên sáng hơn với độ sáng cao hơn
       const uniformColors = {
