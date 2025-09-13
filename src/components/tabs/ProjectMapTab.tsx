@@ -29,7 +29,7 @@ export default function ProjectMapTab({ mapDimensions }: ProjectMapTabProps) {
     }
   };
 
-  const handleApartmentSelect = (apartment: ProcessedLocation) => {
+  const handleApartmentSelect = (apartment: ProcessedLocation | undefined) => {
     setSelectedApartmentForHighlight(apartment);
   };
 
@@ -54,7 +54,6 @@ export default function ProjectMapTab({ mapDimensions }: ProjectMapTabProps) {
       if (selectedFromChat) {
         try {
           let searchTerm = '';
-          let apartmentSearchTerm = '';
           
           // Determine what to search for based on the chat selection
           if (selectedFromChat.apartments) {

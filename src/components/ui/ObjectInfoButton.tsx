@@ -34,12 +34,12 @@ const getDisplayInfo = (item: ObjectData) => {
 };
 
 export default function ObjectInfoButton({ data, onSearch }: ObjectInfoButtonProps) {
+  const { setSelectedLocation } = useLocationSelection();
+
   // Nếu không có dữ liệu, không hiển thị gì
   if (!data || data.length === 0) {
     return null;
   }
-
-  const { setSelectedLocation } = useLocationSelection();
 
   // Lọc ra các item có ít nhất một trong các trường không null
   const validItems = data.filter(item => 

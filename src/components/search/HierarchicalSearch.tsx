@@ -13,7 +13,7 @@ import { useLocationSelection } from '@/components/layout/LocationSelectionConte
 
 interface HierarchicalSearchProps {
   onLocationSelect?: (location: ProcessedLocation) => void;
-  onApartmentSelect?: (apartment: ProcessedLocation) => void; // New prop
+  onApartmentSelect?: (apartment: ProcessedLocation | undefined) => void; // Allow undefined to clear highlight
   className?: string;
   globalSearchTerm?: string;
 }
@@ -264,7 +264,7 @@ export default function HierarchicalSearch({
         // If we can't find the apartment, at least select the building
         console.log('navigateToApartment: Apartment not found, triggering onLocationSelect with building', tempBuilding);
         onLocationSelect?.(tempBuilding);
-        onApartmentSelect?.(null); // Clear apartment highlight
+        onApartmentSelect?.(undefined); // Clear apartment highlight
       }
       
       setIsLoading(false);

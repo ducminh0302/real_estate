@@ -111,13 +111,15 @@ export default function ProjectInfoTab({ mapDimensions }: ProjectInfoTabProps) {
     if (!data || zoneName === 'all') {
       // If no zone selected, return all buildings
       const buildings: string[] = [];
-      Object.values(data.zones).forEach(zone => {
-        Object.values(zone.buildings).forEach(building => {
-          if (!buildings.includes(building.building_name)) {
-            buildings.push(building.building_name);
-          }
+      if (data) {
+        Object.values(data.zones).forEach(zone => {
+          Object.values(zone.buildings).forEach(building => {
+            if (!buildings.includes(building.building_name)) {
+              buildings.push(building.building_name);
+            }
+          });
         });
-      });
+      }
       return buildings;
     }
     
