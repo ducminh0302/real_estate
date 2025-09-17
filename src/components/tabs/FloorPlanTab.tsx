@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { ZoomIn, ZoomOut, RotateCcw, Building } from 'lucide-react';
 import { useFloorPlanStore } from '@/lib/store/floorPlanStore';
+import { FloorPlanApartment } from '@/types';
 
 interface FloorPlanTabProps {
   mapDimensions?: { mapWidth: number; searchWidth: number };
@@ -14,7 +15,7 @@ export default function FloorPlanTab({ mapDimensions }: FloorPlanTabProps) {
   const [isDragging, setIsDragging] = useState<boolean>(false);
   const [dragStart, setDragStart] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
   const [isClient, setIsClient] = useState<boolean>(false);
-  const [apartmentData, setApartmentData] = useState<any[]>([]); // Dữ liệu bounding box của căn hộ
+  const [apartmentData, setApartmentData] = useState<FloorPlanApartment[]>([]); // Dữ liệu bounding box của căn hộ
   const [highlightAnimation, setHighlightAnimation] = useState<number>(0); // Giá trị animation cho highlight
   
   // Sử dụng store để sync với chat
@@ -59,7 +60,7 @@ export default function FloorPlanTab({ mapDimensions }: FloorPlanTabProps) {
 
   // Tìm bounding box của căn hộ được chọn
   const matchedApartments = apartmentData.filter(
-    (apt: any) => {
+    (apt: FloorPlanApartment) => {
       const mappedLabel = apartmentLabelMapping[selectedApartment];
       if (!selectedApartment || !mappedLabel) return false;
       
@@ -175,7 +176,7 @@ export default function FloorPlanTab({ mapDimensions }: FloorPlanTabProps) {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         
         // Chỉ vẽ highlight nếu có căn hộ được chọn
-        if (selectedApartmentData) {
+        if (selectedApartmentData && selectedApartmentData.points) {
           // Draw polygon
           ctx.beginPath();
           selectedApartmentData.points.forEach((point: number[], index: number) => {
@@ -445,7 +446,7 @@ export default function FloorPlanTab({ mapDimensions }: FloorPlanTabProps) {
                   canvas.height = img.naturalHeight || img.height;
                   
                   // Redraw if we have apartment data
-                  if (selectedApartmentData) {
+                  if (selectedApartmentData && selectedApartmentData.points) {
                     const ctx = canvas.getContext('2d');
                     if (ctx) {
                       // Clear canvas

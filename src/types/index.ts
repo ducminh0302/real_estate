@@ -102,3 +102,13 @@ export interface SearchResult {
   score: number;
   matchType: 'exact' | 'partial' | 'fuzzy';
 }
+
+// Floor Plan Types
+export interface FloorPlanApartment {
+  label: string;
+  x_min: number;
+  y_min: number;
+  x_max: number;
+  y_max: number;
+  points?: number[][]; // Array of [x, y] coordinates for polygon
+}
