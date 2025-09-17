@@ -1186,7 +1186,51 @@
               "dt_thong_thuy": 43.2,
               "tong_gia_truoc_vat_kpbt": 3598735074,
               "loai_hinh": "1PN + 1"
-            }
+            },
+            "S6.03 12": {
+              "apartment_number": "S6.03 12",
+              "floor": 16,
+              "area": 43.3,
+              "bedrooms": 1,
+              "bathrooms": 1,
+              "dt_tim_tuong": 46.7,
+              "dt_thong_thuy": 43.3,
+              "tong_gia_truoc_vat_kpbt": 3563702280,
+              "loai_hinh": "1PN + 1"
+            },
+            "S6.03 14": {
+              "apartment_number": "S6.03 14",
+              "floor": 19,
+              "area": 80.8,
+              "bedrooms": 3,
+              "bathrooms": 2,
+              "dt_tim_tuong": 88.6,
+              "dt_thong_thuy": 80.8,
+              "tong_gia_truoc_vat_kpbt": 6589838893,
+              "loai_hinh": "3PN"
+            },
+            "S6.03 14": {
+              "apartment_number": "S6.03 14",
+              "floor": 13,
+              "area": 80.8,
+              "bedrooms": 3,
+              "bathrooms": 2,
+              "dt_tim_tuong": 88.6,
+              "dt_thong_thuy": 80.8,
+              "tong_gia_truoc_vat_kpbt": 6589838893,
+              "loai_hinh": "3PN"
+            },
+            "S6.03 09": {
+              "apartment_number": "S6.03 09",
+              "floor": 6,
+              "area": 43.2,
+              "bedrooms": 1,
+              "bathrooms": 1,
+              "dt_tim_tuong": 46.5,
+              "dt_thong_thuy": 43.2,
+              "tong_gia_truoc_vat_kpbt": 3586862053,
+              "loai_hinh": "1PN + 1"
+            }            
           }
         },
         "S6.02": {
@@ -1258,6 +1302,50 @@
               "dt_thong_thuy": 43.3,
               "tong_gia_truoc_vat_kpbt": 3686196365,
               "loai_hinh": "1PN + 1"
+            },
+            "S6.02 18": {
+              "apartment_number": "S6.02 18",
+              "floor": 7,
+              "area": 43.3,
+              "bedrooms": 1,
+              "bathrooms": 1,
+              "dt_tim_tuong": 46.7,
+              "dt_thong_thuy": 43.3,
+              "tong_gia_truoc_vat_kpbt": 3812882120,
+              "loai_hinh": "1PN + 1"
+            },
+            "S6.02 17": {
+              "apartment_number": "S6.02 17",
+              "floor": 7,
+              "area": 43.3,
+              "bedrooms": 1,
+              "bathrooms": 1,
+              "dt_tim_tuong": 46.7,
+              "dt_thong_thuy": 43.3,
+              "tong_gia_truoc_vat_kpbt": 3812882120,
+              "loai_hinh": "1PN + 1"
+            },
+            "S6.02 16": {
+              "apartment_number": "S6.02 16",
+              "floor": 10,
+              "area": 63.2,
+              "bedrooms": 2,
+              "bathrooms": 2,
+              "dt_tim_tuong": 69.2,
+              "dt_thong_thuy": 63.2,
+              "tong_gia_truoc_vat_kpbt": 5821999107,
+              "loai_hinh": "2PN + 1 (2 Toilet)"
+            },            
+            "S6.02 17": {
+              "apartment_number": "S6.02 17",
+              "floor": 16,
+              "area": 43.3,
+              "bedrooms": 1,
+              "bathrooms": 1,
+              "dt_tim_tuong": 46.7,
+              "dt_thong_thuy": 43.3,
+              "tong_gia_truoc_vat_kpbt": 3686196365,
+              "loai_hinh": "1PN + 1"
             }
           }
         },
@@ -1267,6 +1355,17 @@
           "apartments": {
             "S10.0213.04": {
               "apartment_number": "S10.0213.04",
+              "floor": 13,
+              "area": 63.9,
+              "bedrooms": 2,
+              "bathrooms": 2,
+              "dt_tim_tuong": 69.5,
+              "dt_thong_thuy": 63.9,
+              "tong_gia_truoc_vat_kpbt": 5042194632,
+              "loai_hinh": "2PN + 1 (2 Toilet)"
+            },
+            "S10.02 04": {
+              "apartment_number": "S10.02 04",
               "floor": 13,
               "area": 63.9,
               "bedrooms": 2,
@@ -1336,7 +1435,51 @@
               "dt_thong_thuy": 54.6,
               "tong_gia_truoc_vat_kpbt": 4251087372,
               "loai_hinh": "2PN"
-            }
+            },
+            "S6.06 12": {
+              "apartment_number": "S6.06 12",
+              "floor": 2,
+              "area": 74.8,
+              "bedrooms": 3,
+              "bathrooms": 2,
+              "dt_tim_tuong": 81.2,
+              "dt_thong_thuy": 74.8,
+              "tong_gia_truoc_vat_kpbt": 5800842592,
+              "loai_hinh": "3PN"
+            },
+            "S6.06 05": {
+              "apartment_number": "S6.06 05",
+              "floor": 14,
+              "area": 54.6,
+              "bedrooms": 2,
+              "bathrooms": 1,
+              "dt_tim_tuong": 59.2,
+              "dt_thong_thuy": 54.6,
+              "tong_gia_truoc_vat_kpbt": 4340555989,
+              "loai_hinh": "2PN"
+            },
+            "S6.06 04": {
+              "apartment_number": "S6.06 04",
+              "floor": 13,
+              "area": 54.6,
+              "bedrooms": 2,
+              "bathrooms": 1,
+              "dt_tim_tuong": 59.2,
+              "dt_thong_thuy": 54.6,
+              "tong_gia_truoc_vat_kpbt": 4187593559,
+              "loai_hinh": "2PN"
+            },
+            "S6.06 05": {
+              "apartment_number": "S6.06 05",
+              "floor": 29,
+              "area": 54.6,
+              "bedrooms": 2,
+              "bathrooms": 1,
+              "dt_tim_tuong": 59.2,
+              "dt_thong_thuy": 54.6,
+              "tong_gia_truoc_vat_kpbt": 4395391555,
+              "loai_hinh": "2PN"
+            }          
           }
         },
         "S10.06": {
@@ -1345,6 +1488,17 @@
           "apartments": {
             "S10.0626.04": {
               "apartment_number": "S10.0626.04",
+              "floor": 26,
+              "area": 63.9,
+              "bedrooms": 2,
+              "bathrooms": 2,
+              "dt_tim_tuong": 69.5,
+              "dt_thong_thuy": 63.9,
+              "tong_gia_truoc_vat_kpbt": 4974043534,
+              "loai_hinh": "2PN + 1 (2 Toilet)"
+            },
+            "S10.06 04": {
+              "apartment_number": "S10.06 04",
               "floor": 26,
               "area": 63.9,
               "bedrooms": 2,
