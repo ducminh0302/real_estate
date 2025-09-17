@@ -27,8 +27,8 @@ export default function ChatInput() {
       setLoading(true);
       
       try {
-        // Gọi API
-        const response = await fetch('https://238666ff13c1.ngrok-free.app/webhook/f71d4835-02c9-4462-91a8-22830f4b6f3d/chat', {
+        // Gọi API qua proxy để tránh CORS
+        const response = await fetch('/api/chat-proxy', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -79,9 +79,19 @@ export default function ChatInput() {
         });
       } catch (error) {
         console.error('Error sending message:', error);
+        
+        // Thêm thông tin chi tiết về lỗi
+        let errorMessage = 'Xin lỗi, đã có lỗi xảy ra khi xử lý yêu cầu của bạn.';
+        
+        if (error instanceof TypeError && error.message.includes('fetch')) {
+          errorMessage = 'Không thể kết nối đến server. Vui lòng kiểm tra kết nối mạng và thử lại.';
+        } else if (error instanceof Error) {
+          errorMessage = `Lỗi: ${error.message}. Vui lòng thử lại sau.`;
+        }
+        
         addMessage({
           sender: 'bot',
-          content: 'Xin lỗi, đã có lỗi xảy ra khi xử lý yêu cầu của bạn. Vui lòng thử lại sau.'
+          content: errorMessage
         });
       } finally {
         // Kết thúc trạng thái loading

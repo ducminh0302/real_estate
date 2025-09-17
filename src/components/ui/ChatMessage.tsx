@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useState, useEffect } from 'react';
 import ObjectInfoButton from './ObjectInfoButton';
@@ -26,7 +26,23 @@ export default function ChatMessage({
   objectData,
   onSearch = () => {}
 }: ChatMessageProps) {
-  // Nếu là loading state
+  const [formattedTime, setFormattedTime] = useState<string>('');
+
+  useEffect(() => {
+    setFormattedTime(timestamp.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' }));
+  }, [timestamp]);
+
+  // Function để convert markdown formatting
+  const formatContent = (text: string) => {
+    return text
+      .replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold">$1</strong>') // Convert **text** to bold
+      .replace(/\*(.*?)\*/g, '<em class="italic">$1</em>') // Convert *text* to italic
+      .replace(/`(.*?)`/g, '<code class="bg-gray-100 px-1 py-0.5 rounded text-xs font-mono">$1</code>') // Convert `code` to styled code
+      .replace(/^• (.+)$/gm, '<div class="flex items-start gap-2 my-1"><span class="text-blue-500 font-bold">•</span><span>$1</span></div>') // Convert • bullets to styled lists
+      .replace(/\n\n/g, '<br><br>') // Convert double line breaks to HTML breaks
+      .replace(/\n/g, '<br>'); // Convert single line breaks to HTML breaks
+  };
+
   if (isLoading) {
     return (
       <div className="flex justify-start">
@@ -53,7 +69,10 @@ export default function ChatMessage({
             : 'bg-white border border-gray-200 rounded-bl-none'
         }`}
       >
-        <div className="text-sm whitespace-pre-wrap">{content}</div>
+        <div 
+          className="text-sm whitespace-pre-wrap [&>strong]:font-bold [&>em]:italic [&>code]:bg-gray-100 [&>code]:px-1 [&>code]:py-0.5 [&>code]:rounded [&>code]:text-xs [&>code]:font-mono"
+          dangerouslySetInnerHTML={{ __html: formatContent(content) }}
+        />
         {objectData && objectData.length > 0 && sender === 'bot' && (
           <ObjectInfoButton 
             data={objectData} 
@@ -61,7 +80,7 @@ export default function ChatMessage({
           />
         )}
         <div className={`text-xs mt-1 ${sender === 'user' ? 'text-blue-100' : 'text-gray-500'}`}>
-          {timestamp.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' })}
+          {formattedTime}
         </div>
       </div>
     </div>
