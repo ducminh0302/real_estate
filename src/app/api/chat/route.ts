@@ -2,6 +2,18 @@ import { NextRequest, NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
 
+// Define types for the data structures
+interface RealEstateItem {
+  text?: string;
+  [key: string]: unknown;
+}
+
+interface ObjectData {
+  type: string;
+  data: RealEstateItem[];
+  coordinates: RealEstateItem[];
+}
+
 // Giả lập hàm xử lý chat với dữ liệu bất động sản
 export async function POST(request: NextRequest) {
   try {
@@ -18,27 +30,21 @@ export async function POST(request: NextRequest) {
     const dataPath = path.join(process.cwd(), 'public', 'data');
     const finalLabelsPath = path.join(dataPath, 'final_labels.json');
     const mapNormalizedPath = path.join(dataPath, 'map_normalized.json');
-    const realEstateDataPath = path.join(dataPath, 'real-estate-data.json');
 
-    let finalLabels = [];
-    let mapNormalized = [];
-    let realEstateData = [];
+    let finalLabels: RealEstateItem[] = [];
+    let mapNormalized: RealEstateItem[] = [];
 
     // Đọc dữ liệu nếu tồn tại
     if (fs.existsSync(finalLabelsPath)) {
-      finalLabels = JSON.parse(fs.readFileSync(finalLabelsPath, 'utf-8'));
+      finalLabels = JSON.parse(fs.readFileSync(finalLabelsPath, 'utf-8')) as RealEstateItem[];
     }
 
     if (fs.existsSync(mapNormalizedPath)) {
-      mapNormalized = JSON.parse(fs.readFileSync(mapNormalizedPath, 'utf-8'));
-    }
-
-    if (fs.existsSync(realEstateDataPath)) {
-      realEstateData = JSON.parse(fs.readFileSync(realEstateDataPath, 'utf-8'));
+      mapNormalized = JSON.parse(fs.readFileSync(mapNormalizedPath, 'utf-8')) as RealEstateItem[];
     }
 
     // Xử lý câu hỏi đơn giản dựa trên từ khóa
-    const output = processChat(chatInput, finalLabels, mapNormalized, realEstateData);
+    const output = processChat(chatInput, finalLabels);
     
     // Tìm object data nếu có
     const objectData = findRelevantObjectData(chatInput, finalLabels, mapNormalized);
@@ -58,36 +64,36 @@ export async function POST(request: NextRequest) {
   }
 }
 
-function processChat(input: string, finalLabels: any[], mapNormalized: any[], realEstateData: any[]) {
+function processChat(input: string, finalLabels: RealEstateItem[]): string {
   const lowercaseInput = input.toLowerCase();
   
   // Tìm kiếm tòa nhà
   if (lowercaseInput.includes('tòa') || lowercaseInput.includes('toa')) {
-    const buildings = finalLabels.filter(item => 
+    const buildings = finalLabels.filter((item: RealEstateItem) => 
       item.text && (item.text.includes('Tòa') || item.text.match(/^[A-Z]\d+/))
     );
     
     if (buildings.length > 0) {
-      const buildingList = buildings.map(b => b.text).join(', ');
+      const buildingList = buildings.map((b: RealEstateItem) => b.text).join(', ');
       return `Tôi tìm thấy các tòa nhà sau trong dự án: ${buildingList}. Bạn có muốn biết thêm thông tin về tòa nào cụ thể không?`;
     }
   }
 
   // Tìm kiếm phân khu
   if (lowercaseInput.includes('phân khu') || lowercaseInput.includes('phan khu')) {
-    const districts = finalLabels.filter(item => 
+    const districts = finalLabels.filter((item: RealEstateItem) => 
       item.text && item.text.includes('Phân khu')
     );
     
     if (districts.length > 0) {
-      const districtList = districts.map(d => d.text).join(', ');
+      const districtList = districts.map((d: RealEstateItem) => d.text).join(', ');
       return `Các phân khu trong dự án bao gồm: ${districtList}. Bạn muốn tìm hiểu về phân khu nào?`;
     }
   }
 
   // Tìm kiếm căn hộ
   if (lowercaseInput.includes('căn hộ') || lowercaseInput.includes('can ho') || lowercaseInput.includes('apartment')) {
-    const apartments = finalLabels.filter(item => 
+    const apartments = finalLabels.filter((item: RealEstateItem) => 
       item.text && item.text.match(/\d+\.\d+/)
     );
     
@@ -100,7 +106,7 @@ function processChat(input: string, finalLabels: any[], mapNormalized: any[], re
   const codeMatch = input.match(/([A-Z]\d+\.\d+)/);
   if (codeMatch) {
     const code = codeMatch[1];
-    const found = finalLabels.find(item => 
+    const found = finalLabels.find((item: RealEstateItem) => 
       item.text && item.text.includes(code)
     );
     
@@ -132,7 +138,7 @@ Bạn muốn tìm hiểu về điều gì cụ thể?`;
 Bạn có câu hỏi gì về dự án không?`;
 }
 
-function findRelevantObjectData(input: string, finalLabels: any[], mapNormalized: any[]) {
+function findRelevantObjectData(input: string, finalLabels: RealEstateItem[], mapNormalized: RealEstateItem[]): ObjectData | null {
   const lowercaseInput = input.toLowerCase();
   
   // Tìm object data dựa trên từ khóa
