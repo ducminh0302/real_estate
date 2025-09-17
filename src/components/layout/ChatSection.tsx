@@ -55,6 +55,8 @@ export default function ChatSection() {
             content={message.content}
             timestamp={message.timestamp}
             objectData={message.objectData}
+            floor={message.floor}
+            apartment={message.apartment}
             onSearch={handleSearch}
           />
         ))}

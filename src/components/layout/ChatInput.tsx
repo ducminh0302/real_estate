@@ -3,11 +3,13 @@
 import { useState } from 'react';
 import { Send, Paperclip, Image, Mic } from 'lucide-react';
 import { useChatStore } from '@/lib/store/chatStore';
+import { useFloorPlanStore } from '@/lib/store/floorPlanStore';
 import { useSessionId } from '@/hooks/useSessionId';
 
 export default function ChatInput() {
   const [inputValue, setInputValue] = useState('');
   const { addMessage, setLoading } = useChatStore();
+  const { autoSelectFromChat } = useFloorPlanStore();
   const sessionId = useSessionId();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -70,12 +72,20 @@ export default function ChatInput() {
             console.error('Object data string:', data.object);
           }
         }
+
+        // Xử lý floor và apartment nếu có
+        if (data.floor && data.apartment) {
+          console.log('Received floor and apartment data:', { floor: data.floor, apartment: data.apartment });
+          autoSelectFromChat(data.floor, data.apartment);
+        }
         
         // Thêm phản hồi từ bot vào store
         addMessage({
           sender: 'bot',
           content: data.output || 'Xin lỗi, tôi không thể xử lý yêu cầu của bạn lúc này.',
-          objectData: objectData
+          objectData: objectData,
+          floor: data.floor,
+          apartment: data.apartment
         });
       } catch (error) {
         console.error('Error sending message:', error);

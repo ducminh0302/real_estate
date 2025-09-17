@@ -13,6 +13,8 @@ interface Message {
   content: string;
   timestamp: Date;
   objectData?: ObjectData[];
+  floor?: string;
+  apartment?: string;
 }
 
 interface ChatState {

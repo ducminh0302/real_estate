@@ -9,6 +9,9 @@ interface Apartment {
   area: number;
   bedrooms: number;
   bathrooms: number;
+  dt_tim_tuong: number;
+  dt_thong_thuy: number;
+  tong_gia_truoc_vat_kpbt: number;
   price: number;
   price_per_m2: number;
   status: string;
@@ -65,7 +68,6 @@ export default function ProjectInfoTab({ mapDimensions }: ProjectInfoTabProps) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [filteredApartments, setFilteredApartments] = useState<{apartment: Apartment, building: string, zone: string}[]>([]);
-  const [statusFilter, setStatusFilter] = useState<string>('all');
   const [zoneFilter, setZoneFilter] = useState<string>('all');
   const [buildingFilter, setBuildingFilter] = useState<string>('all');
   const [apartmentFilter, setApartmentFilter] = useState<string>('all');
@@ -203,10 +205,6 @@ export default function ProjectInfoTab({ mapDimensions }: ProjectInfoTabProps) {
     // Apply filters
     let result = allApartments;
     
-    if (statusFilter !== 'all') {
-      result = result.filter(item => item.apartment.status === statusFilter);
-    }
-
     if (zoneFilter !== 'all') {
       result = result.filter(item => item.zone === zoneFilter);
     }
@@ -230,7 +228,7 @@ export default function ProjectInfoTab({ mapDimensions }: ProjectInfoTabProps) {
     }
 
     setFilteredApartments(result);
-  }, [data, statusFilter, zoneFilter, buildingFilter, apartmentFilter, searchTerm]);
+  }, [data, zoneFilter, buildingFilter, apartmentFilter, searchTerm]);
 
   if (loading) {
     return (
@@ -269,7 +267,7 @@ export default function ProjectInfoTab({ mapDimensions }: ProjectInfoTabProps) {
   };
 
   const getStatusInfo = (status: string) => {
-    return data.status_definitions[status] || { label: status, color: '#000000' };
+    return data?.status_definitions?.[status] || { label: status, color: '#000000' };
   };
 
   return (
@@ -280,52 +278,12 @@ export default function ProjectInfoTab({ mapDimensions }: ProjectInfoTabProps) {
           <div>
             <h1 className="text-2xl font-bold text-gray-800">Thông tin dự án bất động sản</h1>
           </div>
-          
-          {/* Thông tin tổng quan */}
-          <div className="flex gap-2 flex-shrink-0">
-            <div className="bg-white px-2 py-1 rounded-lg shadow-sm border border-gray-100 min-w-[90px]">
-              <div className="text-xs text-gray-500">Tổng số căn hộ</div>
-              <div className="text-base font-bold text-gray-800">{data.metadata.total_apartments}</div>
-            </div>
-            <div className="bg-white px-2 py-1 rounded-lg shadow-sm border border-gray-100 min-w-[90px]">
-              <div className="text-xs text-gray-500">Còn trống</div>
-              <div className="text-base font-bold text-green-600">
-                {data.metadata.available_count}
-              </div>
-            </div>
-            <div className="bg-white px-2 py-1 rounded-lg shadow-sm border border-gray-100 min-w-[90px]">
-              <div className="text-xs text-gray-500">Đã đặt cọc</div>
-              <div className="text-base font-bold text-amber-600">
-                {data.metadata.reserved_count}
-              </div>
-            </div>
-            <div className="bg-white px-2 py-1 rounded-lg shadow-sm border border-gray-100 min-w-[90px]">
-              <div className="text-xs text-gray-500">Đã bán</div>
-              <div className="text-base font-bold text-rose-600">
-                {data.metadata.sold_count}
-              </div>
-            </div>
-          </div>
         </div>
       </div>
 
       {/* Bộ lọc */}
       <div className="border-b border-gray-200 p-4 bg-gray-50 flex flex-col gap-4">
         <div className="flex flex-wrap gap-4">
-          <div className="min-w-[180px]">
-            <label className="block text-sm font-medium text-gray-700 mb-1">Trạng thái</label>
-            <select 
-              className="w-full text-sm border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
-              value={statusFilter}
-              onChange={(e) => setStatusFilter(e.target.value)}
-            >
-              <option value="all">Tất cả trạng thái</option>
-              {Object.entries(data.status_definitions).map(([key, status]) => (
-                <option key={key} value={key}>{status.label}</option>
-              ))}
-            </select>
-          </div>
-          
           <div className="min-w-[180px]">
             <label className="block text-sm font-medium text-gray-700 mb-1">Khu vực</label>
             <select 
@@ -389,18 +347,19 @@ export default function ProjectInfoTab({ mapDimensions }: ProjectInfoTabProps) {
       </div>
 
       {/* Bảng thông tin căn hộ */}
-      <div className="flex-1 overflow-auto">
+      <div className="flex-1 overflow-y-auto overflow-x-hidden">
         {/* Container cố định cho tiêu đề */}
         <div className="bg-gray-100 sticky top-0 z-10">
-          <div className="flex px-4 py-3 text-left text-sm font-semibold text-gray-700 uppercase tracking-wider">
-            <div className="flex-[0_0_8.33%] whitespace-nowrap">Căn hộ</div>
-            <div className="flex-[0_0_20.83%] whitespace-nowrap">Khu vực</div>
-            <div className="flex-[0_0_8.33%] whitespace-nowrap">Tòa nhà</div>
-            <div className="flex-[0_0_8.33%] whitespace-nowrap">Tầng</div>
-            <div className="flex-[0_0_8.33%] whitespace-nowrap">Diện tích</div>
-            <div className="flex-[0_0_16.66%] whitespace-nowrap">Phòng</div>
-            <div className="flex-[0_0_16.66%] whitespace-nowrap">Giá</div>
-            <div className="flex-[0_0_12.5%] whitespace-nowrap">Trạng thái</div>
+          <div className="flex px-4 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider min-h-[60px] items-center">
+            <div className="flex-[0_0_10%] leading-tight">Số căn hộ</div>
+            <div className="flex-[0_0_16%] leading-tight">Tên khu vực</div>
+            <div className="flex-[0_0_8%] leading-tight">Tòa nhà</div>
+            <div className="flex-[0_0_9%] leading-tight">Số tầng</div>
+            <div className="flex-[0_0_10%] leading-tight">Diện tích<br/>sử dụng</div>
+            <div className="flex-[0_0_10%] leading-tight">Diện tích<br/>tim tường</div>
+            <div className="flex-[0_0_10%] leading-tight">Diện tích<br/>thông thủy</div>
+            <div className="flex-[0_0_14%] leading-tight">Số phòng<br/>(ngủ/tắm)</div>
+            <div className="flex-[0_0_13%] leading-tight">Tổng giá trước<br/>VAT + KPBT</div>
           </div>
         </div>
         
@@ -410,40 +369,32 @@ export default function ProjectInfoTab({ mapDimensions }: ProjectInfoTabProps) {
             const statusInfo = getStatusInfo(item.apartment.status);
             return (
               <div key={index} className="flex px-4 py-3 hover:bg-gray-50 transition-colors">
-                <div className="flex-[0_0_8.33%] text-sm font-semibold text-gray-900">
+                <div className="flex-[0_0_10%] text-sm font-semibold text-gray-900">
                   {item.apartment.apartment_number}
                 </div>
-                <div className="flex-[0_0_20.83%] text-sm text-gray-600">
+                <div className="flex-[0_0_16%] text-sm text-gray-600">
                   {item.zone}
                 </div>
-                <div className="flex-[0_0_8.33%] text-sm text-gray-600">
+                <div className="flex-[0_0_8%] text-sm text-gray-600">
                   {item.building}
                 </div>
-                <div className="flex-[0_0_8.33%] text-sm text-gray-600">
+                <div className="flex-[0_0_9%] text-sm text-gray-600">
                   {item.apartment.floor}
                 </div>
-                <div className="flex-[0_0_8.33%] text-sm text-gray-600">
+                <div className="flex-[0_0_10%] text-sm text-gray-600">
                   <span className="font-medium">{formatNumber(item.apartment.area)}</span> m²
                 </div>
-                <div className="flex-[0_0_16.66%] text-sm text-gray-600">
+                <div className="flex-[0_0_10%] text-sm text-gray-600">
+                  <span className="font-medium">{formatNumber(item.apartment.dt_tim_tuong)}</span> m²
+                </div>
+                <div className="flex-[0_0_10%] text-sm text-gray-600">
+                  <span className="font-medium">{formatNumber(item.apartment.dt_thong_thuy)}</span> m²
+                </div>
+                <div className="flex-[0_0_14%] text-sm text-gray-600">
                   <span className="font-medium">{item.apartment.bedrooms}</span> ngủ / <span className="font-medium">{item.apartment.bathrooms}</span> tắm
                 </div>
-                <div className="flex-[0_0_16.66%] text-sm text-gray-600">
-                  <div className="font-semibold text-gray-900">{formatCurrency(item.apartment.price)}</div>
-                  <div className="text-xs text-gray-500 mt-1">
-                    {formatCurrency(item.apartment.price_per_m2)}/m²
-                  </div>
-                </div>
-                <div className="flex-[0_0_12.5%]">
-                  <span 
-                    className="px-2 py-1 inline-flex text-xs leading-4 font-semibold rounded-full"
-                    style={{ 
-                      backgroundColor: `${statusInfo.color}20`,
-                      color: statusInfo.color
-                    }}
-                  >
-                    {statusInfo.label}
-                  </span>
+                <div className="flex-[0_0_13%] text-sm text-gray-600">
+                  <div className="font-semibold text-gray-900">{formatCurrency(item.apartment.tong_gia_truoc_vat_kpbt)}</div>
                 </div>
               </div>
             );

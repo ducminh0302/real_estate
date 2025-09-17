@@ -4926,7 +4926,7 @@
     },
     "The Origami": {
       "zone_name": "The Origami",
-      "total_labels": 459,
+      "total_labels": 472,
       "zone_labels": [
         {
           "original_label": "origami",
@@ -5553,7 +5553,7 @@
         },
         "S6.06": {
           "building_name": "S6.06",
-          "total_apartments": 17,
+          "total_apartments": 30,
           "building_labels": [
             {
               "original_label": "origami s6.06",
@@ -5681,6 +5681,97 @@
               "zone_name": "The Origami",
               "building_name": "S6.06",
               "apartment_number": "17"
+            },
+            {
+              "original_label": "origami s6.06 18",
+              "label_type": "apartment",
+              "zone_name": "The Origami",
+              "building_name": "S6.06",
+              "apartment_number": "18"
+            },
+            {
+              "original_label": "origami s6.06 19",
+              "label_type": "apartment",
+              "zone_name": "The Origami",
+              "building_name": "S6.06",
+              "apartment_number": "19"
+            },
+            {
+              "original_label": "origami s6.06 20",
+              "label_type": "apartment",
+              "zone_name": "The Origami",
+              "building_name": "S6.06",
+              "apartment_number": "20"
+            },
+            {
+              "original_label": "origami s6.06 21",
+              "label_type": "apartment",
+              "zone_name": "The Origami",
+              "building_name": "S6.06",
+              "apartment_number": "21"
+            },
+            {
+              "original_label": "origami s6.06 22",
+              "label_type": "apartment",
+              "zone_name": "The Origami",
+              "building_name": "S6.06",
+              "apartment_number": "22"
+            },
+            {
+              "original_label": "origami s6.06 23",
+              "label_type": "apartment",
+              "zone_name": "The Origami",
+              "building_name": "S6.06",
+              "apartment_number": "23"
+            },
+            {
+              "original_label": "origami s6.06 24",
+              "label_type": "apartment",
+              "zone_name": "The Origami",
+              "building_name": "S6.06",
+              "apartment_number": "24"
+            },
+            {
+              "original_label": "origami s6.06 25",
+              "label_type": "apartment",
+              "zone_name": "The Origami",
+              "building_name": "S6.06",
+              "apartment_number": "25"
+            },
+            {
+              "original_label": "origami s6.06 26",
+              "label_type": "apartment",
+              "zone_name": "The Origami",
+              "building_name": "S6.06",
+              "apartment_number": "26"
+            },
+            {
+              "original_label": "origami s6.06 27",
+              "label_type": "apartment",
+              "zone_name": "The Origami",
+              "building_name": "S6.06",
+              "apartment_number": "27"
+            },
+            {
+              "original_label": "origami s6.06 28",
+              "label_type": "apartment",
+              "zone_name": "The Origami",
+              "building_name": "S6.06",
+              "apartment_number": "28"
+            },
+            {
+              "original_label": "origami s6.06 29",
+              "label_type": "apartment",
+              "zone_name": "The Origami",
+              "building_name": "S6.06",
+              "apartment_number": "29"
+            },
+            {
+              "original_label": "origami s6.06 30",
+              "label_type": "apartment",
+              "zone_name": "The Origami",
+              "building_name": "S6.06",
+              "apartment_number": "30"
             }
           ]
         },

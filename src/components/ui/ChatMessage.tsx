@@ -15,6 +15,8 @@ interface ChatMessageProps {
   timestamp: Date;
   isLoading?: boolean;
   objectData?: ObjectData[];
+  floor?: string;
+  apartment?: string;
   onSearch?: (searchTerm: string) => void;
 }
 
@@ -24,6 +26,8 @@ export default function ChatMessage({
   timestamp, 
   isLoading = false,
   objectData,
+  floor,
+  apartment,
   onSearch = () => {}
 }: ChatMessageProps) {
   const [formattedTime, setFormattedTime] = useState<string>('');
