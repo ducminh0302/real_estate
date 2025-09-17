@@ -90,8 +90,8 @@
               "area": 85.3,
               "bedrooms": 3,
               "bathrooms": 2,
-              "dt_tim_tuong": 92.0,
-              "dt_thong_thuy": 79.0,
+              "dt_tim_tuong": 92,
+              "dt_thong_thuy": 79,
               "tong_gia_truoc_vat_kpbt": 4686752748
             },
             "GH-02 4": {
@@ -100,7 +100,7 @@
               "area": 72.1,
               "bedrooms": 2,
               "bathrooms": 2,
-              "dt_tim_tuong": 82.0,
+              "dt_tim_tuong": 82,
               "dt_thong_thuy": 68.4,
               "tong_gia_truoc_vat_kpbt": 3712020431
             }
@@ -173,7 +173,7 @@
               "bedrooms": 2,
               "bathrooms": 2,
               "dt_tim_tuong": 75.3,
-              "dt_thong_thuy": 63.0,
+              "dt_thong_thuy": 63,
               "tong_gia_truoc_vat_kpbt": 3414992026
             },
             "gh-05 2": {
@@ -183,7 +183,7 @@
               "bedrooms": 2,
               "bathrooms": 2,
               "dt_tim_tuong": 82.7,
-              "dt_thong_thuy": 67.0,
+              "dt_thong_thuy": 67,
               "tong_gia_truoc_vat_kpbt": 3922904032
             },
             "gh-05 1": {
@@ -290,7 +290,7 @@
               "area": 64.8,
               "bedrooms": 2,
               "bathrooms": 2,
-              "dt_tim_tuong": 72.0,
+              "dt_tim_tuong": 72,
               "dt_thong_thuy": 61.4,
               "tong_gia_truoc_vat_kpbt": 3329179464
             }
@@ -307,7 +307,7 @@
               "bedrooms": 2,
               "bathrooms": 2,
               "dt_tim_tuong": 68.8,
-              "dt_thong_thuy": 60.0,
+              "dt_thong_thuy": 60,
               "tong_gia_truoc_vat_kpbt": 3433881937
             },
             "B 3": {
@@ -373,7 +373,7 @@
               "bedrooms": 2,
               "bathrooms": 2,
               "dt_tim_tuong": 79.5,
-              "dt_thong_thuy": 69.0,
+              "dt_thong_thuy": 69,
               "tong_gia_truoc_vat_kpbt": 3759724757
             },
             "C 3": {
@@ -553,7 +553,7 @@
               "bedrooms": 2,
               "bathrooms": 2,
               "dt_tim_tuong": 76.6,
-              "dt_thong_thuy": 65.0,
+              "dt_thong_thuy": 65,
               "tong_gia_truoc_vat_kpbt": 3631780353
             },
             "B 2": {
@@ -598,8 +598,8 @@
               "area": 82.8,
               "bedrooms": 3,
               "bathrooms": 2,
-              "dt_tim_tuong": 90.0,
-              "dt_thong_thuy": 77.0,
+              "dt_tim_tuong": 90,
+              "dt_thong_thuy": 77,
               "tong_gia_truoc_vat_kpbt": 4070113921
             }
           }
@@ -702,8 +702,8 @@
               "area": 73.5,
               "bedrooms": 2,
               "bathrooms": 2,
-              "dt_tim_tuong": 82.0,
-              "dt_thong_thuy": 69.0,
+              "dt_tim_tuong": 82,
+              "dt_thong_thuy": 69,
               "tong_gia_truoc_vat_kpbt": 3694384389
             },
             "BE-02 12": {
@@ -713,7 +713,7 @@
               "bedrooms": 3,
               "bathrooms": 3,
               "dt_tim_tuong": 100.9,
-              "dt_thong_thuy": 82.0,
+              "dt_thong_thuy": 82,
               "tong_gia_truoc_vat_kpbt": 4738063426
             },
             "BE-02 15": {
@@ -758,7 +758,7 @@
               "area": 71.8,
               "bedrooms": 2,
               "bathrooms": 2,
-              "dt_tim_tuong": 80.0,
+              "dt_tim_tuong": 80,
               "dt_thong_thuy": 66.4,
               "tong_gia_truoc_vat_kpbt": 3681222916
             }
@@ -795,7 +795,7 @@
               "bedrooms": 3,
               "bathrooms": 3,
               "dt_tim_tuong": 91.2,
-              "dt_thong_thuy": 80.0,
+              "dt_thong_thuy": 80,
               "tong_gia_truoc_vat_kpbt": 4749938552
             }
           }
@@ -899,7 +899,7 @@
               "bedrooms": 3,
               "bathrooms": 2,
               "dt_tim_tuong": 86.9,
-              "dt_thong_thuy": 71.0,
+              "dt_thong_thuy": 71,
               "tong_gia_truoc_vat_kpbt": 4153379902
             },
             "OS1 8": {
@@ -1075,7 +1075,7 @@
               "bedrooms": 2,
               "bathrooms": 2,
               "dt_tim_tuong": 74.9,
-              "dt_thong_thuy": 61.0,
+              "dt_thong_thuy": 61,
               "tong_gia_truoc_vat_kpbt": 3392820628
             },
             "OA-02 8": {
@@ -1084,7 +1084,7 @@
               "area": 75.4,
               "bedrooms": 3,
               "bathrooms": 2,
-              "dt_tim_tuong": 85.0,
+              "dt_tim_tuong": 85,
               "dt_thong_thuy": 70.6,
               "tong_gia_truoc_vat_kpbt": 3690265271
             },
@@ -1097,6 +1097,262 @@
               "dt_tim_tuong": 95.7,
               "dt_thong_thuy": 84.1,
               "tong_gia_truoc_vat_kpbt": 4501082972
+            }
+          }
+        }
+      }
+    },
+    "The Origami": {
+      "zone_name": "The Origami",
+      "description": "Phân khu The Origami - Thiết kế hiện đại và tinh tế",
+      "buildings": {
+        "S6.03": {
+          "building_name": "S6.03",
+          "floors": 19,
+          "apartments": {
+            "S6.0316.12": {
+              "apartment_number": "S6.0316.12",
+              "floor": 16,
+              "area": 43.3,
+              "bedrooms": 1,
+              "bathrooms": 1,
+              "dt_tim_tuong": 46.7,
+              "dt_thong_thuy": 43.3,
+              "tong_gia_truoc_vat_kpbt": 3563702280,
+              "loai_hinh": "1PN + 1"
+            },
+            "S6.0319.14": {
+              "apartment_number": "S6.0319.14",
+              "floor": 19,
+              "area": 80.8,
+              "bedrooms": 3,
+              "bathrooms": 2,
+              "dt_tim_tuong": 88.6,
+              "dt_thong_thuy": 80.8,
+              "tong_gia_truoc_vat_kpbt": 6589838893,
+              "loai_hinh": "3PN"
+            },
+            "S6.0313.14": {
+              "apartment_number": "S6.0313.14",
+              "floor": 13,
+              "area": 80.8,
+              "bedrooms": 3,
+              "bathrooms": 2,
+              "dt_tim_tuong": 88.6,
+              "dt_thong_thuy": 80.8,
+              "tong_gia_truoc_vat_kpbt": 6589838893,
+              "loai_hinh": "3PN"
+            },
+            "S6.0311.14": {
+              "apartment_number": "S6.0311.14",
+              "floor": 11,
+              "area": 80.8,
+              "bedrooms": 3,
+              "bathrooms": 2,
+              "dt_tim_tuong": 88.6,
+              "dt_thong_thuy": 80.8,
+              "tong_gia_truoc_vat_kpbt": 6924651637,
+              "loai_hinh": "3PN"
+            },
+            "S6.0310.14": {
+              "apartment_number": "S6.0310.14",
+              "floor": 10,
+              "area": 80.8,
+              "bedrooms": 3,
+              "bathrooms": 2,
+              "dt_tim_tuong": 88.6,
+              "dt_thong_thuy": 80.8,
+              "tong_gia_truoc_vat_kpbt": 6933700654,
+              "loai_hinh": "3PN"
+            },
+            "S6.0306.09": {
+              "apartment_number": "S6.0306.09",
+              "floor": 6,
+              "area": 43.2,
+              "bedrooms": 1,
+              "bathrooms": 1,
+              "dt_tim_tuong": 46.5,
+              "dt_thong_thuy": 43.2,
+              "tong_gia_truoc_vat_kpbt": 3586862053,
+              "loai_hinh": "1PN + 1"
+            },
+            "S6.0307.09": {
+              "apartment_number": "S6.0307.09",
+              "floor": 7,
+              "area": 43.2,
+              "bedrooms": 1,
+              "bathrooms": 1,
+              "dt_tim_tuong": 46.5,
+              "dt_thong_thuy": 43.2,
+              "tong_gia_truoc_vat_kpbt": 3598735074,
+              "loai_hinh": "1PN + 1"
+            }
+          }
+        },
+        "S6.02": {
+          "building_name": "S6.02",
+          "floors": 16,
+          "apartments": {
+            "S6.0207.18": {
+              "apartment_number": "S6.0207.18",
+              "floor": 7,
+              "area": 43.3,
+              "bedrooms": 1,
+              "bathrooms": 1,
+              "dt_tim_tuong": 46.7,
+              "dt_thong_thuy": 43.3,
+              "tong_gia_truoc_vat_kpbt": 3812882120,
+              "loai_hinh": "1PN + 1"
+            },
+            "S6.0207.17": {
+              "apartment_number": "S6.0207.17",
+              "floor": 7,
+              "area": 43.3,
+              "bedrooms": 1,
+              "bathrooms": 1,
+              "dt_tim_tuong": 46.7,
+              "dt_thong_thuy": 43.3,
+              "tong_gia_truoc_vat_kpbt": 3812882120,
+              "loai_hinh": "1PN + 1"
+            },
+            "S6.0210.16": {
+              "apartment_number": "S6.0210.16",
+              "floor": 10,
+              "area": 63.2,
+              "bedrooms": 2,
+              "bathrooms": 2,
+              "dt_tim_tuong": 69.2,
+              "dt_thong_thuy": 63.2,
+              "tong_gia_truoc_vat_kpbt": 5821999107,
+              "loai_hinh": "2PN + 1 (2 Toilet)"
+            },
+            "S6.0209.16": {
+              "apartment_number": "S6.0209.16",
+              "floor": 9,
+              "area": 63.2,
+              "bedrooms": 2,
+              "bathrooms": 2,
+              "dt_tim_tuong": 69.2,
+              "dt_thong_thuy": 63.2,
+              "tong_gia_truoc_vat_kpbt": 5810956511,
+              "loai_hinh": "2PN + 1 (2 Toilet)"
+            },
+            "S6.0212.16": {
+              "apartment_number": "S6.0212.16",
+              "floor": 12,
+              "area": 63.2,
+              "bedrooms": 2,
+              "bathrooms": 2,
+              "dt_tim_tuong": 69.2,
+              "dt_thong_thuy": 63.2,
+              "tong_gia_truoc_vat_kpbt": 5825679901,
+              "loai_hinh": "2PN + 1 (2 Toilet)"
+            },
+            "S6.0216.17": {
+              "apartment_number": "S6.0216.17",
+              "floor": 16,
+              "area": 43.3,
+              "bedrooms": 1,
+              "bathrooms": 1,
+              "dt_tim_tuong": 46.7,
+              "dt_thong_thuy": 43.3,
+              "tong_gia_truoc_vat_kpbt": 3686196365,
+              "loai_hinh": "1PN + 1"
+            }
+          }
+        },
+        "S10.02": {
+          "building_name": "S10.02",
+          "floors": 13,
+          "apartments": {
+            "S10.0213.04": {
+              "apartment_number": "S10.0213.04",
+              "floor": 13,
+              "area": 63.9,
+              "bedrooms": 2,
+              "bathrooms": 2,
+              "dt_tim_tuong": 69.5,
+              "dt_thong_thuy": 63.9,
+              "tong_gia_truoc_vat_kpbt": 5042194632,
+              "loai_hinh": "2PN + 1 (2 Toilet)"
+            }
+          }
+        },
+        "S6.06": {
+          "building_name": "S6.06",
+          "floors": 29,
+          "apartments": {
+            "S6.0602.12": {
+              "apartment_number": "S6.0602.12",
+              "floor": 2,
+              "area": 74.8,
+              "bedrooms": 3,
+              "bathrooms": 2,
+              "dt_tim_tuong": 81.2,
+              "dt_thong_thuy": 74.8,
+              "tong_gia_truoc_vat_kpbt": 5800842592,
+              "loai_hinh": "3PN"
+            },
+            "S6.0614.05": {
+              "apartment_number": "S6.0614.05",
+              "floor": 14,
+              "area": 54.6,
+              "bedrooms": 2,
+              "bathrooms": 1,
+              "dt_tim_tuong": 59.2,
+              "dt_thong_thuy": 54.6,
+              "tong_gia_truoc_vat_kpbt": 4340555989,
+              "loai_hinh": "2PN"
+            },
+            "S6.0613.04": {
+              "apartment_number": "S6.0613.04",
+              "floor": 13,
+              "area": 54.6,
+              "bedrooms": 2,
+              "bathrooms": 1,
+              "dt_tim_tuong": 59.2,
+              "dt_thong_thuy": 54.6,
+              "tong_gia_truoc_vat_kpbt": 4187593559,
+              "loai_hinh": "2PN"
+            },
+            "S6.0629.05": {
+              "apartment_number": "S6.0629.05",
+              "floor": 29,
+              "area": 54.6,
+              "bedrooms": 2,
+              "bathrooms": 1,
+              "dt_tim_tuong": 59.2,
+              "dt_thong_thuy": 54.6,
+              "tong_gia_truoc_vat_kpbt": 4395391555,
+              "loai_hinh": "2PN"
+            },
+            "S6.0629.04": {
+              "apartment_number": "S6.0629.04",
+              "floor": 29,
+              "area": 54.6,
+              "bedrooms": 2,
+              "bathrooms": 1,
+              "dt_tim_tuong": 59.2,
+              "dt_thong_thuy": 54.6,
+              "tong_gia_truoc_vat_kpbt": 4251087372,
+              "loai_hinh": "2PN"
+            }
+          }
+        },
+        "S10.06": {
+          "building_name": "S10.06",
+          "floors": 26,
+          "apartments": {
+            "S10.0626.04": {
+              "apartment_number": "S10.0626.04",
+              "floor": 26,
+              "area": 63.9,
+              "bedrooms": 2,
+              "bathrooms": 2,
+              "dt_tim_tuong": 69.5,
+              "dt_thong_thuy": 63.9,
+              "tong_gia_truoc_vat_kpbt": 4974043534,
+              "loai_hinh": "2PN + 1 (2 Toilet)"
             }
           }
         }
